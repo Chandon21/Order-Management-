@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
+import { Router, ActivatedRoute } from '@angular/router';
 import { OrderService } from '../order.service';
 import { CustomerService } from '../customer.service';
-import { ProductService } from '../product.service';
 
 @Component({
   selector: 'app-order-form',
@@ -11,49 +10,59 @@ import { ProductService } from '../product.service';
   styleUrls: ['./order-form.component.css']
 })
 export class OrderFormComponent implements OnInit {
-  orderForm: FormGroup;
-  customers: any[] = [];
-  products: any[] = [];
-  orderId: string | null = null;
+  public orderForm!: FormGroup;
+  public customers: any[] = [];
+  public products = [
+    { name: 'Laptop', price: 800 },
+    { name: 'Keyboard', price: 50 },
+    { name: 'Mouse', price: 30 },
+    { name: 'Monitor', price: 200 },
+    { name: 'Printer', price: 150 },
+    { name: 'Tablet', price: 400 },
+    { name: 'Headset', price: 60 },
+    { name: 'Webcam', price: 80 }
+  ];
+  public orderId: number | null = null;
 
   constructor(
     private fb: FormBuilder,
-    private orderService: OrderService,
-    private customerService: CustomerService,
-    private productService: ProductService,
     public router: Router,
-    public route: ActivatedRoute
-  ) {
-    // Initialize Form
+    private route: ActivatedRoute,
+    private orderService: OrderService,
+    private customerService: CustomerService
+  ) {}
+
+  ngOnInit(): void {
+    this.orderId = Number(this.route.snapshot.paramMap.get('id'));
     this.orderForm = this.fb.group({
-      customer: [null, Validators.required],
+      orderNo: [''], // Order number
+      orderDate: [new Date().toISOString().substring(0, 10), Validators.required], // default today
+      customer: ['', Validators.required],
+      status: ['Pending', Validators.required], // Add status field
       items: this.fb.array([]),
       vat: [0],
       discount: [0],
       total: [{ value: 0, disabled: true }]
     });
-  }
 
-  ngOnInit(): void {
-    // Load customers and products
     this.customerService.getCustomers().subscribe(res => this.customers = res);
-    this.productService.getProducts().subscribe(res => this.products = res);
 
-    // Check if Edit mode
-    this.orderId = this.route.snapshot.paramMap.get('id');
     if (this.orderId) {
-      this.orderService.getOrder(+this.orderId).subscribe(order => {
+      this.orderService.getOrder(this.orderId).subscribe(order => {
         this.orderForm.patchValue({
-          customer: order.customer,
+          orderNo: order.orderNo,
+          orderDate: order.orderDate,
+          customer: order.customer?.id,
+          status: order.status || 'Pending',
           vat: order.vat || 0,
           discount: order.discount || 0
         });
         order.items.forEach((item: any) => this.addItem(item));
-
         this.calculateTotal();
       });
     } else {
-      this.addItem(); // At least one item for new order
+      this.addItem(); // start with one item
+      this.orderForm.patchValue({ orderNo: this.generateOrderNo() });
     }
   }
 
@@ -63,12 +72,11 @@ export class OrderFormComponent implements OnInit {
 
   addItem(item?: any) {
     this.items.push(this.fb.group({
-      product: [item?.product || null, Validators.required],
+      product: [item?.product || '', Validators.required],
       qty: [item?.qty || 1, [Validators.required, Validators.min(1)]],
-      price: [item?.price || 0, [Validators.required, Validators.min(0)]],
+      price: [item?.price || 0, Validators.required],
       total: [{ value: item?.total || 0, disabled: true }]
     }));
-    this.calculateTotal();
   }
 
   removeItem(index: number) {
@@ -77,18 +85,19 @@ export class OrderFormComponent implements OnInit {
   }
 
   calculateTotal() {
-    let total = 0;
-    this.items.controls.forEach(ctrl => {
-      const qty = ctrl.get('qty')?.value || 0;
-      const price = ctrl.get('price')?.value || 0;
-      const lineTotal = qty * price;
-      ctrl.get('total')?.setValue(lineTotal, { emitEvent: false });
-      total += lineTotal;
+    let subtotal = 0;
+    this.items.controls.forEach(group => {
+      const qty = group.get('qty')?.value || 0;
+      const price = group.get('price')?.value || 0;
+      const total = qty * price;
+      group.get('total')?.setValue(total);
+      subtotal += total;
     });
 
     const vat = this.orderForm.get('vat')?.value || 0;
     const discount = this.orderForm.get('discount')?.value || 0;
-    const grandTotal = total + (total * vat / 100) - (total * discount / 100);
+    const grandTotal = subtotal + subtotal * (vat / 100) - subtotal * (discount / 100);
+
     this.orderForm.get('total')?.setValue(grandTotal);
   }
 
@@ -99,18 +108,52 @@ export class OrderFormComponent implements OnInit {
     }
 
     const orderData = this.orderForm.getRawValue();
-    console.log('Order Data:', orderData);
+    const customerId = orderData.customer;
+    const customerObj = this.customers.find(c => c.id === customerId);
+    orderData.customer = customerObj;
 
     if (this.orderId) {
-      this.orderService.updateOrder(+this.orderId, orderData).subscribe(() => {
-        alert('Order updated successfully!');
+      this.orderService.updateOrder(this.orderId, orderData).subscribe(res => {
+        console.log('Order updated', res);
         this.router.navigate(['/orders']);
       });
     } else {
-      this.orderService.createOrder(orderData).subscribe(() => {
-        alert('Order created successfully!');
+      this.orderService.createOrder(orderData).subscribe(res => {
+        console.log('Order created', res);
         this.router.navigate(['/orders']);
       });
     }
+  }
+
+  addNewCustomer(name: string) {
+    const newCustomer = { name };
+    this.customerService.createCustomer(newCustomer).subscribe(res => {
+      this.customers.push(res);
+      this.orderForm.get('customer')?.setValue(res.id);
+    });
+  }
+
+  addNewCustomerPrompt() {
+    const name = window.prompt('Enter Customer Name');
+    if (name) {
+      this.addNewCustomer(name);
+    }
+  }
+
+  addGuestCustomer() {
+    const guestCustomer = { name: 'Guest' + Math.floor(Math.random() * 1000) };
+    this.customerService.createCustomer(guestCustomer).subscribe(res => {
+      this.customers.push(res);
+      this.orderForm.get('customer')?.setValue(res.id);
+    });
+  }
+
+  generateOrderNo(): string {
+    const date = new Date();
+    const yyyy = date.getFullYear();
+    const mm = String(date.getMonth() + 1).padStart(2, '0');
+    const dd = String(date.getDate()).padStart(2, '0');
+    const random = Math.floor(Math.random() * 900 + 100); // random 3 digits
+    return `SO-${yyyy}-${mm}-${dd}-${random}`;
   }
 }

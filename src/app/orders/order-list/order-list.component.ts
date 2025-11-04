@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { OrderService } from '../order.service';
 
 @Component({
@@ -7,31 +8,20 @@ import { OrderService } from '../order.service';
   styleUrls: ['./order-list.component.css']
 })
 export class OrderListComponent implements OnInit {
-  orders: any[] = [];
-  searchTerm: string = '';
-  page: number = 1;
-  pageSize: number = 10;
+  public orders: any[] = [];
 
-  constructor(private orderService: OrderService) {}
+  constructor(public router: Router, private orderService: OrderService) {}
 
   ngOnInit(): void {
     this.loadOrders();
   }
 
-  loadOrders(): void {
-    const params = {
-      _page: this.page.toString(),
-      _limit: this.pageSize.toString(),
-      q: this.searchTerm
-    };
-    this.orderService.getOrders(params).subscribe((res: any) => {
-      this.orders = res;
-    });
+  loadOrders() {
+    this.orderService.getOrders().subscribe(res => this.orders = res);
   }
 
-  onSearch(value: string): void {
-    this.searchTerm = value;
-    this.page = 1;
-    this.loadOrders();
+  deleteOrder(id: number) {
+    this.orderService.deleteOrder(id).subscribe(() => this.loadOrders());
   }
 }
+
