@@ -16,13 +16,14 @@ export class OrderFormComponent implements OnInit {
     { name: 'Laptop', price: 800 },
     { name: 'Mouse', price: 50 },
     { name: 'Keyboard', price: 100 },
-    { name: 'Monitor', price: 200 },
+    { name: 'Monitor', price: 300 },
     { name: 'Printer', price: 150 },
-    { name: 'Headset', price: 50 },
-    { name: 'USB Drive', price: 20 },
-    { name: 'Webcam', price: 80 }
+    { name: 'Headset', price: 70 },
+    { name: 'Webcam', price: 90 },
+    { name: 'Speaker', price: 60 }
   ];
   public orderId: number | null = null;
+  public newCustomerName: string = '';
 
   constructor(
     private fb: FormBuilder,
@@ -34,35 +35,37 @@ export class OrderFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.orderId = Number(this.route.snapshot.paramMap.get('id'));
-
     this.orderForm = this.fb.group({
-      orderNo: [{ value: this.generateOrderNumber(), disabled: true }],
-      orderDate: [this.orderId ? '' : new Date().toISOString().substring(0, 10), Validators.required],
+      orderNo: [{ value: '', disabled: true }],
+      orderDate: [new Date().toISOString().substring(0, 10), Validators.required],
       customer: ['', Validators.required],
+      status: ['Pending', Validators.required],
       items: this.fb.array([]),
       vat: [0],
       discount: [0],
-      status: ['Pending', Validators.required],
       total: [{ value: 0, disabled: true }]
     });
 
+    // Load customers
     this.customerService.getCustomers().subscribe(res => this.customers = res);
 
+    // Load order if editing
     if (this.orderId) {
       this.orderService.getOrder(this.orderId).subscribe(order => {
         this.orderForm.patchValue({
           orderNo: order.orderNo,
           orderDate: order.orderDate,
           customer: order.customer?.id,
+          status: order.status,
           vat: order.vat || 0,
-          discount: order.discount || 0,
-          status: order.status || 'Pending'
+          discount: order.discount || 0
         });
         order.items.forEach((item: any) => this.addItem(item));
         this.calculateTotal();
       });
     } else {
-      this.addItem();
+      this.generateOrderNo();
+      this.addItem(); // start with one item
     }
   }
 
@@ -97,7 +100,6 @@ export class OrderFormComponent implements OnInit {
     const vat = this.orderForm.get('vat')?.value || 0;
     const discount = this.orderForm.get('discount')?.value || 0;
     const grandTotal = subtotal + subtotal * (vat / 100) - subtotal * (discount / 100);
-
     this.orderForm.get('total')?.setValue(grandTotal);
   }
 
@@ -108,52 +110,44 @@ export class OrderFormComponent implements OnInit {
     }
 
     const orderData = this.orderForm.getRawValue();
-
-    // Add customer object
-    const customerObj = this.customers.find(c => c.id === orderData.customer);
+    const customerId = orderData.customer;
+    const customerObj = this.customers.find(c => c.id === customerId);
     orderData.customer = customerObj;
 
-    if (!this.orderId) {
-      orderData.orderDate = orderData.orderDate || new Date().toISOString().substring(0, 10);
-    }
-
     if (this.orderId) {
-      this.orderService.updateOrder(this.orderId, orderData).subscribe(res => {
-        console.log('Order updated', res);
+      this.orderService.updateOrder(this.orderId, orderData).subscribe(() => {
         this.router.navigate(['/orders']);
       });
     } else {
-      this.orderService.createOrder(orderData).subscribe(res => {
-        console.log('Order created', res);
+      this.orderService.createOrder(orderData).subscribe(() => {
         this.router.navigate(['/orders']);
       });
     }
   }
 
-  addNewCustomerPrompt() {
-    const name = window.prompt('Enter Customer Name');
-    if (name) this.addNewCustomer(name);
-  }
-
-  addNewCustomer(name: string) {
-    const newCustomer = { name };
+  // Add new customer from input
+  addNewCustomer() {
+    if (!this.newCustomerName.trim()) return;
+    const newCustomer = { name: this.newCustomerName };
     this.customerService.createCustomer(newCustomer).subscribe(res => {
       this.customers.push(res);
       this.orderForm.get('customer')?.setValue(res.id);
+      this.newCustomerName = '';
     });
   }
 
+  // Optional: Guest customer
   addGuestCustomer() {
-    const guestCustomer = { name: 'Guest' + new Date().getTime() };
+    const guestCustomer = { name: 'Guest Customer' };
     this.customerService.createCustomer(guestCustomer).subscribe(res => {
       this.customers.push(res);
       this.orderForm.get('customer')?.setValue(res.id);
     });
   }
 
-  generateOrderNumber(): string {
+  generateOrderNo() {
     const year = new Date().getFullYear();
-    const random = Math.floor(100 + Math.random() * 900);
-    return `SO-${year}-${random}`;
+    const randomNumber = Math.floor(100 + Math.random() * 900); // 3 digits
+    this.orderForm.get('orderNo')?.setValue(`SO-${year}-${randomNumber}`);
   }
 }

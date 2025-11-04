@@ -237,6 +237,33 @@
       "discount": 5,
       "status": "Pending",
       "total": 100000
+    },
+    {
+      "id": "6afb",
+      "orderNo": "SO-2025-445",
+      "orderDate": "2025-11-05",
+      "customer": {
+        "id": "3578",
+        "name": "CG"
+      },
+      "status": "Pending",
+      "items": [
+        {
+          "product": "Laptop",
+          "qty": 1,
+          "price": 100000,
+          "total": 100000
+        },
+        {
+          "product": "Headset",
+          "qty": 2,
+          "price": 5000,
+          "total": 10000
+        }
+      ],
+      "vat": 5,
+      "discount": 10,
+      "total": 104500
     }
   ],
   "customers": [
@@ -323,6 +350,14 @@
     {
       "id": "da00",
       "name": "Guest1762255572781"
+    },
+    {
+      "id": "1963",
+      "name": "Guest"
+    },
+    {
+      "id": "3578",
+      "name": "CG"
     }
   ],
   "products": [
