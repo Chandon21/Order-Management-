@@ -1,7 +1,7 @@
 {
   "orders": [
     {
-      "id": 1,
+      "id": "1",
       "orderNo": "SO-2025-001",
       "customer": {
         "id": 1,
@@ -159,33 +159,6 @@
       "total": 9975
     },
     {
-      "id": "605a",
-      "orderNo": "SO-2025-11-04-268",
-      "orderDate": "2025-11-04",
-      "customer": {
-        "id": "f5a8",
-        "name": "Protik"
-      },
-      "status": "Completed",
-      "items": [
-        {
-          "product": "Laptop",
-          "qty": 1,
-          "price": 1000000,
-          "total": 1000000
-        },
-        {
-          "product": "Keyboard",
-          "qty": 1,
-          "price": 5000,
-          "total": 5000
-        }
-      ],
-      "vat": 5,
-      "discount": 20,
-      "total": 854250
-    },
-    {
       "id": "6c82",
       "orderNo": "SO-2025-374",
       "customer": {
@@ -264,15 +237,156 @@
       "vat": 5,
       "discount": 10,
       "total": 104500
+    },
+    {
+      "id": "a2d8",
+      "orderNo": "SO-2025-617",
+      "orderDate": "2025-11-04",
+      "customer": {
+        "id": "761c",
+        "name": "TG"
+      },
+      "status": "Completed",
+      "items": [
+        {
+          "product": "Laptop",
+          "qty": 1,
+          "price": 100000,
+          "total": 100000
+        },
+        {
+          "product": "Keyboard",
+          "qty": 1,
+          "price": 500,
+          "total": 500
+        }
+      ],
+      "vat": 5,
+      "discount": 5,
+      "total": 100500
+    },
+    {
+      "id": "92af",
+      "orderNo": "SO-2025-170",
+      "orderDate": "2025-11-04",
+      "customer": {
+        "id": "36d6",
+        "name": "Chandan"
+      },
+      "status": "Completed",
+      "items": [
+        {
+          "product": "Laptop",
+          "qty": 1,
+          "price": 34520,
+          "total": 34520
+        }
+      ],
+      "vat": 4,
+      "discount": 10,
+      "total": 32448.800000000003
+    },
+    {
+      "id": "1023",
+      "orderNo": "SO-2025-728",
+      "orderDate": "2025-11-04",
+      "customer": {
+        "id": "84f2",
+        "name": "ESS"
+      },
+      "status": "Completed",
+      "items": [
+        {
+          "product": "Headset",
+          "qty": 1,
+          "price": 2134,
+          "total": 2134
+        },
+        {
+          "product": "Monitor",
+          "qty": 1,
+          "price": 34535,
+          "total": 34535
+        },
+        {
+          "product": "Printer",
+          "qty": 1,
+          "price": 23554,
+          "total": 23554
+        },
+        {
+          "product": "Webcam",
+          "qty": 1,
+          "price": 23442,
+          "total": 23442
+        },
+        {
+          "product": "Speaker",
+          "qty": 1,
+          "price": 5000,
+          "total": 5000
+        }
+      ],
+      "vat": 10,
+      "discount": 5,
+      "total": 93098.25
+    },
+    {
+      "id": "983f",
+      "orderNo": "SO-2025-465",
+      "orderDate": "2025-11-04",
+      "customer": {
+        "id": "853c",
+        "name": "Chandan"
+      },
+      "status": "Completed",
+      "items": [
+        {
+          "product": "Laptop",
+          "qty": 1,
+          "price": 100000,
+          "total": 100000
+        },
+        {
+          "product": "Printer",
+          "qty": 1,
+          "price": 20000,
+          "total": 20000
+        }
+      ],
+      "vat": 5,
+      "discount": 15,
+      "total": 108000
+    },
+    {
+      "id": "92c6",
+      "orderNo": "SO-2025-548",
+      "orderDate": "2025-11-04",
+      "customer": {
+        "id": "588b",
+        "name": "Ghosh"
+      },
+      "status": "Completed",
+      "items": [
+        {
+          "product": "Headset",
+          "qty": 1,
+          "price": 1000,
+          "total": 1000
+        }
+      ],
+      "vat": 5,
+      "discount": 5,
+      "total": 1000
     }
   ],
   "customers": [
     {
-      "id": 1,
+      "id": "1",
       "name": "John Doe"
     },
     {
-      "id": 2,
+      "id": "2",
       "name": "Jane Smith"
     },
     {
@@ -358,16 +472,32 @@
     {
       "id": "3578",
       "name": "CG"
+    },
+    {
+      "id": "761c",
+      "name": "TG"
+    },
+    {
+      "id": "84f2",
+      "name": "ESS"
+    },
+    {
+      "id": "853c",
+      "name": "Chandan"
+    },
+    {
+      "id": "588b",
+      "name": "Ghosh"
     }
   ],
   "products": [
     {
-      "id": 1,
+      "id": "1",
       "name": "Laptop",
       "price": 800
     },
     {
-      "id": 2,
+      "id": "2",
       "name": "Mouse",
       "price": 20
     }

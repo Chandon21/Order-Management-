@@ -1,30 +1,47 @@
-<div class="container mt-3">
-  <h2>Sales Orders</h2>
-  <button class="btn btn-success mb-2" (click)="router.navigate(['/orders/new'])">Create New Order</button>
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <!-- Search Box -->
+  <div class="input-group w-50">
+    <input
+      type="text"
+      class="form-control"
+      placeholder="Search orders..."
+      [(ngModel)]="searchTerm"
+      (input)="onSearchInput()"
+    />
+    <button class="btn btn-primary" (click)="filterOrders()">Search</button>
+  </div>
 
-  <table class="table table-bordered">
-    <thead>
-      <tr>
-        <th>Order No</th>
-        <th>Customer</th>
-        <th>Order Date</th>
-        <th>Total</th>
-        <th>Status</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let order of orders">
-        <td>{{ order.orderNo }}</td>
-        <td>{{ order.customer?.name }}</td>
-        <td>{{ order.orderDate | date:'shortDate' }}</td>
-        <td>{{ order.total | currency }}</td>
-        <td>{{ order.status }}</td>
-        <td>
-          <button class="btn btn-info btn-sm me-2" [routerLink]="['/orders', order.id, 'edit']">Edit</button>
-          <button class="btn btn-danger btn-sm" (click)="deleteOrder(order.id)">Delete</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <!-- Create New Order Button -->
+  <div>
+    <button class="btn btn-success" (click)="createOrder()">Create New Order</button>
+  </div>
 </div>
+
+<table class="table table-bordered table-hover">
+  <thead class="table-light">
+    <tr>
+      <th>Order No</th>
+      <th>Customer</th>
+      <th>Date</th>
+      <th>Status</th>
+      <th>Total</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let order of filteredOrders">
+      <td>{{ order.orderNo }}</td>
+      <td>{{ order.customer?.name }}</td>
+      <td>{{ order.orderDate | date:'shortDate' }}</td>
+      <td>{{ order.status }}</td>
+      <td>{{ order.total | number:'1.2-2' }}</td>
+      <td>
+        <button class="btn btn-sm btn-primary me-2" (click)="editOrder(order.id)">Edit</button>
+        <button class="btn btn-sm btn-danger" (click)="deleteOrder(order.id)">Delete</button>
+      </td>
+    </tr>
+    <tr *ngIf="filteredOrders.length === 0">
+      <td colspan="6" class="text-center">No orders found.</td>
+    </tr>
+  </tbody>
+</table>
