@@ -14,12 +14,12 @@ export class OrderFormComponent implements OnInit {
   public customers: any[] = [];
   public products = [
     { name: 'Laptop', price: 800 },
-    { name: 'Keyboard', price: 50 },
-    { name: 'Mouse', price: 30 },
+    { name: 'Mouse', price: 50 },
+    { name: 'Keyboard', price: 100 },
     { name: 'Monitor', price: 200 },
     { name: 'Printer', price: 150 },
-    { name: 'Tablet', price: 400 },
-    { name: 'Headset', price: 60 },
+    { name: 'Headset', price: 50 },
+    { name: 'USB Drive', price: 20 },
     { name: 'Webcam', price: 80 }
   ];
   public orderId: number | null = null;
@@ -34,14 +34,15 @@ export class OrderFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.orderId = Number(this.route.snapshot.paramMap.get('id'));
+
     this.orderForm = this.fb.group({
-      orderNo: [''], // Order number
-      orderDate: [new Date().toISOString().substring(0, 10), Validators.required], // default today
+      orderNo: [{ value: this.generateOrderNumber(), disabled: true }],
+      orderDate: [this.orderId ? '' : new Date().toISOString().substring(0, 10), Validators.required],
       customer: ['', Validators.required],
-      status: ['Pending', Validators.required], // Add status field
       items: this.fb.array([]),
       vat: [0],
       discount: [0],
+      status: ['Pending', Validators.required],
       total: [{ value: 0, disabled: true }]
     });
 
@@ -53,16 +54,15 @@ export class OrderFormComponent implements OnInit {
           orderNo: order.orderNo,
           orderDate: order.orderDate,
           customer: order.customer?.id,
-          status: order.status || 'Pending',
           vat: order.vat || 0,
-          discount: order.discount || 0
+          discount: order.discount || 0,
+          status: order.status || 'Pending'
         });
         order.items.forEach((item: any) => this.addItem(item));
         this.calculateTotal();
       });
     } else {
-      this.addItem(); // start with one item
-      this.orderForm.patchValue({ orderNo: this.generateOrderNo() });
+      this.addItem();
     }
   }
 
@@ -108,9 +108,14 @@ export class OrderFormComponent implements OnInit {
     }
 
     const orderData = this.orderForm.getRawValue();
-    const customerId = orderData.customer;
-    const customerObj = this.customers.find(c => c.id === customerId);
+
+    // Add customer object
+    const customerObj = this.customers.find(c => c.id === orderData.customer);
     orderData.customer = customerObj;
+
+    if (!this.orderId) {
+      orderData.orderDate = orderData.orderDate || new Date().toISOString().substring(0, 10);
+    }
 
     if (this.orderId) {
       this.orderService.updateOrder(this.orderId, orderData).subscribe(res => {
@@ -125,6 +130,11 @@ export class OrderFormComponent implements OnInit {
     }
   }
 
+  addNewCustomerPrompt() {
+    const name = window.prompt('Enter Customer Name');
+    if (name) this.addNewCustomer(name);
+  }
+
   addNewCustomer(name: string) {
     const newCustomer = { name };
     this.customerService.createCustomer(newCustomer).subscribe(res => {
@@ -133,27 +143,17 @@ export class OrderFormComponent implements OnInit {
     });
   }
 
-  addNewCustomerPrompt() {
-    const name = window.prompt('Enter Customer Name');
-    if (name) {
-      this.addNewCustomer(name);
-    }
-  }
-
   addGuestCustomer() {
-    const guestCustomer = { name: 'Guest' + Math.floor(Math.random() * 1000) };
+    const guestCustomer = { name: 'Guest' + new Date().getTime() };
     this.customerService.createCustomer(guestCustomer).subscribe(res => {
       this.customers.push(res);
       this.orderForm.get('customer')?.setValue(res.id);
     });
   }
 
-  generateOrderNo(): string {
-    const date = new Date();
-    const yyyy = date.getFullYear();
-    const mm = String(date.getMonth() + 1).padStart(2, '0');
-    const dd = String(date.getDate()).padStart(2, '0');
-    const random = Math.floor(Math.random() * 900 + 100); // random 3 digits
-    return `SO-${yyyy}-${mm}-${dd}-${random}`;
+  generateOrderNumber(): string {
+    const year = new Date().getFullYear();
+    const random = Math.floor(100 + Math.random() * 900);
+    return `SO-${year}-${random}`;
   }
 }

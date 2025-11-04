@@ -159,57 +159,6 @@
       "total": 9975
     },
     {
-      "id": "78b7",
-      "customer": {
-        "id": "5588",
-        "name": "dhaka"
-      },
-      "items": [
-        {
-          "product": "Laptop",
-          "qty": 1,
-          "price": 500,
-          "total": 500
-        },
-        {
-          "product": "Keyboard",
-          "qty": 1,
-          "price": 10,
-          "total": 10
-        }
-      ],
-      "vat": 5,
-      "discount": 10,
-      "total": 484.5,
-      "orderNo": "SO-2025-848",
-      "orderDate": "2025-11-04T10:41:56.931Z"
-    },
-    {
-      "id": "15da",
-      "customer": {
-        "id": "15be",
-        "name": "Chittagong"
-      },
-      "status": "Processing",
-      "items": [
-        {
-          "product": "Laptop",
-          "qty": 1,
-          "price": 100000,
-          "total": 100000
-        },
-        {
-          "product": "Keyboard",
-          "qty": 1,
-          "price": 500,
-          "total": 500
-        }
-      ],
-      "vat": 5,
-      "discount": 5,
-      "total": 100500
-    },
-    {
       "id": "605a",
       "orderNo": "SO-2025-11-04-268",
       "orderDate": "2025-11-04",
@@ -235,6 +184,59 @@
       "vat": 5,
       "discount": 20,
       "total": 854250
+    },
+    {
+      "id": "6c82",
+      "orderNo": "SO-2025-374",
+      "customer": {
+        "id": "c954",
+        "name": "Fuad"
+      },
+      "items": [
+        {
+          "product": "Laptop",
+          "qty": 1,
+          "price": 50000,
+          "total": 50000
+        },
+        {
+          "product": "Chair",
+          "qty": 1,
+          "price": 10000,
+          "total": 10000
+        }
+      ],
+      "vat": 5,
+      "discount": 10,
+      "status": "Completed",
+      "total": 57000
+    },
+    {
+      "id": "396b",
+      "orderNo": "SO-2025-298",
+      "orderDate": "2025-11-04",
+      "customer": {
+        "id": "d31b",
+        "name": "Ashik"
+      },
+      "items": [
+        {
+          "product": "Laptop",
+          "qty": 1,
+          "price": 70000,
+          "total": 70000
+        },
+        {
+          "product": "Laptop",
+          "qty": 1,
+          "price": 30000,
+          "total": 30000
+        }
+      ],
+      "vat": 5,
+      "discount": 5,
+      "status": "Pending",
+      "total": 100000
     }
   ],
   "customers": [
@@ -297,6 +299,30 @@
     {
       "id": "f5a8",
       "name": "Protik"
+    },
+    {
+      "id": "c954",
+      "name": "Fuad"
+    },
+    {
+      "id": "d31b",
+      "name": "Ashik"
+    },
+    {
+      "id": "8591",
+      "name": "Guest1762255569974"
+    },
+    {
+      "id": "a38e",
+      "name": "Guest1762255571893"
+    },
+    {
+      "id": "e11a",
+      "name": "Guest1762255572422"
+    },
+    {
+      "id": "da00",
+      "name": "Guest1762255572781"
     }
   ],
   "products": [
