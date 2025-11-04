@@ -1,0 +1,118 @@
+{
+  "orders": [
+    {
+      "id": 1,
+      "orderNo": "SO-2025-001",
+      "customer": {
+        "id": 1,
+        "name": "John Doe"
+      },
+      "orderDate": "2025-11-04",
+      "items": [
+        {
+          "product": "Laptop",
+          "qty": 2,
+          "price": 800
+        }
+      ],
+      "total": 1600,
+      "status": "Completed"
+    },
+    {
+      "id": "2e7d",
+      "customer": "2",
+      "items": [
+        {
+          "product": "Laptop",
+          "qty": 2,
+          "price": 10,
+          "total": 20
+        }
+      ],
+      "vat": 14,
+      "discount": 0,
+      "total": 22.8,
+      "status": "Pending"
+    },
+    {
+      "id": "37ab",
+      "customer": "2",
+      "items": [
+        {
+          "product": "Laptop",
+          "qty": 5,
+          "price": 10,
+          "total": 50
+        },
+        {
+          "product": "Laptop",
+          "qty": 1,
+          "price": 50,
+          "total": 50
+        }
+      ],
+      "vat": 15,
+      "discount": 0,
+      "total": 115,
+      "status": "Pending"
+    },
+    {
+      "id": "d5c9",
+      "customer": {
+        "id": 2,
+        "name": "Jane Smith"
+      },
+      "items": [
+        {
+          "product": "Laptop",
+          "qty": 10,
+          "price": 10,
+          "total": 100
+        }
+      ],
+      "vat": 3,
+      "discount": 5,
+      "total": 98
+    },
+    {
+      "id": "29f6",
+      "customer": {
+        "id": 1,
+        "name": "John Doe"
+      },
+      "items": [
+        {
+          "product": "Mouse",
+          "qty": 1,
+          "price": 1000,
+          "total": 1000
+        }
+      ],
+      "vat": 5,
+      "discount": 10,
+      "total": 950
+    }
+  ],
+  "customers": [
+    {
+      "id": 1,
+      "name": "John Doe"
+    },
+    {
+      "id": 2,
+      "name": "Jane Smith"
+    }
+  ],
+  "products": [
+    {
+      "id": 1,
+      "name": "Laptop",
+      "price": 800
+    },
+    {
+      "id": 2,
+      "name": "Mouse",
+      "price": 20
+    }
+  ]
+}

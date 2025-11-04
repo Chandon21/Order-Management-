@@ -1,0 +1,32 @@
+<div class="container mt-4">
+  <h2>Sales Orders</h2>
+  <div class="mb-3">
+    <input type="text" class="form-control" placeholder="Search by customer or order no"
+           [(ngModel)]="searchTerm" (ngModelChange)="onSearch($event)">
+  </div>
+
+  <table class="table table-bordered table-striped">
+    <thead>
+      <tr>
+        <th>Order No</th>
+        <th>Customer</th>
+        <th>Date</th>
+        <th>Total</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let order of orders">
+        <td>{{ order.orderNo }}</td>
+        <td>{{ order.customer?.name }}</td>
+        <td>{{ order.orderDate | date:'shortDate' }}</td>
+        <td>{{ order.total | currency }}</td>
+        <td>{{ order.status }}</td>
+        <td>
+          <a [routerLink]="['/orders', order.id, 'edit']" class="btn btn-sm btn-info">Edit</a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

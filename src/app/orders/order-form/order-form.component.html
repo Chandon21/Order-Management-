@@ -1,0 +1,72 @@
+<div class="card">
+  <div class="card-header">
+    <h3>{{ orderId ? 'Edit Order' : 'Create Order' }}</h3>
+  </div>
+  <div class="card-body">
+    <form [formGroup]="orderForm" (ngSubmit)="save()">
+
+      <!-- Customer Selection -->
+      <div class="mb-3">
+        <label class="form-label">Customer</label>
+        <select formControlName="customer" class="form-select">
+          <option [ngValue]="null">Select Customer</option>
+          <option *ngFor="let c of customers" [ngValue]="c">{{ c.name }}</option>
+        </select>
+        <div *ngIf="orderForm.get('customer')?.invalid && orderForm.get('customer')?.touched"
+             class="text-danger">Customer is required</div>
+      </div>
+
+      <!-- Order Items -->
+      <div formArrayName="items">
+        <div *ngFor="let item of items.controls; let i=index" [formGroupName]="i" class="card mb-2 p-2">
+          <div class="row g-2">
+            <div class="col-3">
+              <label>Product</label>
+              <select formControlName="product" class="form-select">
+                <option [ngValue]="null">Select Product</option>
+                <option *ngFor="let p of products" [value]="p.name">{{ p.name }}</option>
+              </select>
+            </div>
+            <div class="col-2">
+              <label>Qty</label>
+              <input type="number" class="form-control" formControlName="qty" (input)="calculateTotal()">
+            </div>
+            <div class="col-2">
+              <label>Unit Price</label>
+              <input type="number" class="form-control" formControlName="price" (input)="calculateTotal()">
+            </div>
+            <div class="col-2">
+              <label>Total</label>
+              <input type="number" class="form-control" formControlName="total" [disabled]="true">
+            </div>
+            <div class="col-3 d-flex align-items-end">
+              <button type="button" class="btn btn-danger" (click)="removeItem(i)">Remove</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <button type="button" class="btn btn-success mb-3" (click)="addItem()">Add Item</button>
+
+      <!-- VAT and Discount -->
+      <div class="row g-2 mb-3">
+        <div class="col-2">
+          <label>VAT (%)</label>
+          <input type="number" class="form-control" formControlName="vat" (input)="calculateTotal()">
+        </div>
+        <div class="col-2">
+          <label>Discount (%)</label>
+          <input type="number" class="form-control" formControlName="discount" (input)="calculateTotal()">
+        </div>
+        <div class="col-2">
+          <label>Grand Total</label>
+          <input type="number" class="form-control" formControlName="total" [disabled]="true">
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary">{{ orderId ? 'Update' : 'Save' }}</button>
+      <button type="button" class="btn btn-secondary ms-2" (click)="router.navigate(['/orders'])">Cancel</button>
+
+    </form>
+  </div>
+</div>
