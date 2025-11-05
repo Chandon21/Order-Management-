@@ -12,177 +12,14 @@
         {
           "product": "Laptop",
           "qty": 2,
-          "price": 800
+          "price": 800,
+          "total": 1600
         }
       ],
-      "total": 1600,
-      "status": "Completed"
-    },
-    {
-      "id": "2e7d",
-      "customer": "2",
-      "items": [
-        {
-          "product": "Laptop",
-          "qty": 2,
-          "price": 10,
-          "total": 20
-        }
-      ],
-      "vat": 14,
-      "discount": 0,
-      "total": 22.8,
-      "status": "Pending"
-    },
-    {
-      "id": "37ab",
-      "customer": "2",
-      "items": [
-        {
-          "product": "Laptop",
-          "qty": 5,
-          "price": 10,
-          "total": 50
-        },
-        {
-          "product": "Laptop",
-          "qty": 1,
-          "price": 50,
-          "total": 50
-        }
-      ],
-      "vat": 15,
-      "discount": 0,
-      "total": 115,
-      "status": "Pending"
-    },
-    {
-      "id": "d5c9",
-      "customer": {
-        "id": 2,
-        "name": "Jane Smith"
-      },
-      "items": [
-        {
-          "product": "Laptop",
-          "qty": 10,
-          "price": 10,
-          "total": 100
-        }
-      ],
-      "vat": 3,
-      "discount": 5,
-      "total": 98
-    },
-    {
-      "id": "29f6",
-      "customer": {
-        "id": 1,
-        "name": "John Doe"
-      },
-      "items": [
-        {
-          "product": "Mouse",
-          "qty": 1,
-          "price": 1000,
-          "total": 1000
-        }
-      ],
-      "vat": 5,
-      "discount": 10,
-      "total": 950
-    },
-    {
-      "id": "961a",
-      "customerId": "36d6",
-      "items": [
-        {
-          "product": "dg",
-          "qty": 1,
-          "price": 278634,
-          "total": 278634
-        }
-      ],
-      "vat": 5,
-      "discount": 10,
-      "total": 264702.3,
-      "status": "Pending"
-    },
-    {
-      "id": "5027",
-      "customer": {
-        "id": "5a3c",
-        "name": "Robin"
-      },
-      "items": [
-        {
-          "product": "Laptop",
-          "qty": 1,
-          "price": 100000,
-          "total": 100000
-        },
-        {
-          "product": "Monitor",
-          "qty": 1,
-          "price": 10000,
-          "total": 10000
-        }
-      ],
-      "vat": 5,
-      "discount": 10,
-      "total": 104500,
-      "orderNo": "ORD-9395",
-      "date": "2025-11-04T10:23:23.197Z"
-    },
-    {
-      "id": "17c1",
-      "customer": {
-        "id": "a930",
-        "name": "Fuad"
-      },
-      "items": [
-        {
-          "product": "Laptop",
-          "qty": 1,
-          "price": 10000,
-          "total": 10000
-        },
-        {
-          "product": "Keyboard",
-          "qty": 1,
-          "price": 500,
-          "total": 500
-        }
-      ],
-      "vat": 5,
-      "discount": 10,
-      "total": 9975
-    },
-    {
-      "id": "6c82",
-      "orderNo": "SO-2025-374",
-      "customer": {
-        "id": "c954",
-        "name": "Fuad"
-      },
-      "items": [
-        {
-          "product": "Laptop",
-          "qty": 1,
-          "price": 50000,
-          "total": 50000
-        },
-        {
-          "product": "Chair",
-          "qty": 1,
-          "price": 10000,
-          "total": 10000
-        }
-      ],
-      "vat": 5,
-      "discount": 10,
+      "total": 1680,
       "status": "Completed",
-      "total": 57000
+      "vat": 5,
+      "discount": 0
     },
     {
       "id": "396b",
@@ -352,11 +189,17 @@
           "qty": 1,
           "price": 20000,
           "total": 20000
+        },
+        {
+          "product": "Headset",
+          "qty": 1,
+          "price": 5000,
+          "total": 5000
         }
       ],
       "vat": 5,
       "discount": 15,
-      "total": 108000
+      "total": 112500
     },
     {
       "id": "92c6",
@@ -378,6 +221,288 @@
       "vat": 5,
       "discount": 5,
       "total": 1000
+    },
+    {
+      "id": "0aff",
+      "orderNo": "SO-2025-750",
+      "orderDate": "2025-11-04",
+      "customer": {
+        "id": "c0ff",
+        "name": "Robin"
+      },
+      "status": "Completed",
+      "items": [
+        {
+          "product": "Laptop",
+          "qty": 1,
+          "price": 50000,
+          "total": 50000
+        },
+        {
+          "product": "Monitor",
+          "qty": 1,
+          "price": 50000,
+          "total": 50000
+        }
+      ],
+      "vat": 10,
+      "discount": 10,
+      "total": 100000
+    },
+    {
+      "id": "d2f7",
+      "orderNo": "SO-2025-851",
+      "orderDate": "2025-11-04",
+      "customer": {
+        "id": "1f2e",
+        "name": "Chandan Ghosh"
+      },
+      "status": "Completed",
+      "items": [
+        {
+          "product": "Laptop",
+          "qty": 1,
+          "price": 100000,
+          "total": 100000
+        },
+        {
+          "product": "Monitor",
+          "qty": 1,
+          "price": 15000,
+          "total": 15000
+        },
+        {
+          "product": "Keyboard",
+          "qty": 1,
+          "price": 2000,
+          "total": 2000
+        },
+        {
+          "product": "Headset",
+          "qty": 1,
+          "price": 3000,
+          "total": 3000
+        },
+        {
+          "product": "Speaker",
+          "qty": 1,
+          "price": 1000,
+          "total": 1000
+        }
+      ],
+      "vat": 5,
+      "discount": 10,
+      "total": 114950
+    },
+    {
+      "id": "4b4c",
+      "orderNo": "SO-2025-395",
+      "orderDate": "2025-11-04",
+      "customer": {
+        "id": "1f2e",
+        "name": "Chandan Ghosh"
+      },
+      "status": "Completed",
+      "items": [
+        {
+          "product": "Laptop",
+          "qty": 1,
+          "price": 100000,
+          "total": 100000
+        },
+        {
+          "product": "Keyboard",
+          "qty": 1,
+          "price": 2000,
+          "total": 2000
+        },
+        {
+          "product": "Headset",
+          "qty": 1,
+          "price": 3000,
+          "total": 3000
+        },
+        {
+          "product": "Monitor",
+          "qty": 1,
+          "price": 15000,
+          "total": 15000
+        },
+        {
+          "product": "Webcam",
+          "qty": 1,
+          "price": 20000,
+          "total": 20000
+        }
+      ],
+      "vat": 10,
+      "discount": 10,
+      "total": 140000
+    },
+    {
+      "id": "9e04",
+      "orderNo": "SO-2025-722",
+      "orderDate": "2025-11-10",
+      "customer": {
+        "id": "7b6a",
+        "name": "Jahangir"
+      },
+      "status": "Completed",
+      "items": [
+        {
+          "product": "Laptop",
+          "qty": 1,
+          "price": 100000,
+          "total": 100000
+        },
+        {
+          "product": "Keyboard",
+          "qty": 1,
+          "price": 5000,
+          "total": 5000
+        }
+      ],
+      "vat": 5,
+      "discount": 5,
+      "total": 105000
+    },
+    {
+      "id": "1d0e",
+      "orderNo": "SO-2025-466",
+      "orderDate": "2025-11-05",
+      "customer": {
+        "id": "49bc",
+        "name": "Robin Ahmed Shawon"
+      },
+      "status": "Completed",
+      "items": [
+        {
+          "product": "Laptop",
+          "qty": 1,
+          "price": 100000,
+          "total": 100000
+        },
+        {
+          "product": "Keyboard",
+          "qty": 1,
+          "price": 5000,
+          "total": 5000
+        },
+        {
+          "product": "Printer",
+          "qty": 1,
+          "price": 20000,
+          "total": 20000
+        }
+      ],
+      "vat": 10,
+      "discount": 8,
+      "total": 127500
+    },
+    {
+      "id": "6cf5",
+      "orderNo": "SO-2025-751",
+      "orderDate": "2025-11-05",
+      "customer": {
+        "id": "d31b",
+        "name": "Ashik"
+      },
+      "status": "Completed",
+      "items": [
+        {
+          "product": "Laptop",
+          "qty": 1,
+          "price": 50000,
+          "total": 50000
+        },
+        {
+          "product": "Laptop",
+          "qty": 1,
+          "price": 50000,
+          "total": 50000
+        }
+      ],
+      "vat": 10,
+      "discount": 10,
+      "total": 100000
+    },
+    {
+      "id": "f3a7",
+      "orderNo": "SO-2025-858",
+      "orderDate": "2025-11-05",
+      "customer": {
+        "id": "3815",
+        "name": "Efficient"
+      },
+      "status": "Completed",
+      "items": [
+        {
+          "product": "Laptop",
+          "qty": 1,
+          "price": 100000,
+          "total": 100000
+        },
+        {
+          "product": "Keyboard",
+          "qty": 1,
+          "price": 5000,
+          "total": 5000
+        },
+        {
+          "product": "Monitor",
+          "qty": 1,
+          "price": 15000,
+          "total": 15000
+        },
+        {
+          "product": "Printer",
+          "qty": 1,
+          "price": 20000,
+          "total": 20000
+        },
+        {
+          "product": "Speaker",
+          "qty": 1,
+          "price": 10000,
+          "total": 10000
+        },
+        {
+          "product": "Laptop",
+          "qty": 1,
+          "price": 50000,
+          "total": 50000
+        }
+      ],
+      "vat": 10,
+      "discount": 10,
+      "total": 200000
+    },
+    {
+      "id": "71fe",
+      "orderNo": "SO-2025-505",
+      "orderDate": "2025-11-05",
+      "customer": {
+        "id": "33db",
+        "name": "University"
+      },
+      "status": "Completed",
+      "items": [
+        {
+          "product": "Laptop",
+          "qty": 1,
+          "price": 100000,
+          "total": 100000
+        },
+        {
+          "product": "Laptop",
+          "qty": 1,
+          "price": 100000,
+          "total": 100000
+        }
+      ],
+      "vat": 10,
+      "discount": 10,
+      "total": 200000
     }
   ],
   "customers": [
@@ -488,6 +613,54 @@
     {
       "id": "588b",
       "name": "Ghosh"
+    },
+    {
+      "id": "8140",
+      "name": "name"
+    },
+    {
+      "id": "01f9",
+      "name": "Tilottoma Ghosh"
+    },
+    {
+      "id": "c0ff",
+      "name": "Robin"
+    },
+    {
+      "id": "1f2e",
+      "name": "Chandan Ghosh"
+    },
+    {
+      "id": "5104",
+      "name": "erg"
+    },
+    {
+      "id": "a949",
+      "name": "Chandan"
+    },
+    {
+      "id": "d47b",
+      "name": "hosen"
+    },
+    {
+      "id": "7b6a",
+      "name": "Jahangir"
+    },
+    {
+      "id": "cc6a",
+      "name": "abc"
+    },
+    {
+      "id": "49bc",
+      "name": "Robin Ahmed Shawon"
+    },
+    {
+      "id": "3815",
+      "name": "Efficient"
+    },
+    {
+      "id": "33db",
+      "name": "University"
     }
   ],
   "products": [

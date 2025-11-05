@@ -21,7 +21,7 @@ export class OrderListComponent implements OnInit {
   loadOrders() {
     this.orderService.getOrders().subscribe((res: any[]) => {
       this.orders = res;
-      this.filteredOrders = [...this.orders]; // keep a separate filtered list
+      this.filteredOrders = [...this.orders];
     });
   }
 
@@ -40,7 +40,7 @@ export class OrderListComponent implements OnInit {
   }
 
   onSearchInput() {
-    this.filterOrders(); // filter as you type
+    this.filterOrders();
   }
 
   createOrder() {
@@ -48,13 +48,13 @@ export class OrderListComponent implements OnInit {
   }
 
   editOrder(id: number) {
-    this.router.navigate(['/orders', id]);
+    this.router.navigate(['/orders', id, 'edit']);
   }
 
   deleteOrder(id: number) {
     if (confirm('Are you sure you want to delete this order?')) {
       this.orderService.deleteOrder(id).subscribe(() => {
-        this.loadOrders(); // reload after delete
+        this.loadOrders();
       });
     }
   }

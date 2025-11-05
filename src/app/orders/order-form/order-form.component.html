@@ -12,9 +12,10 @@
       <div class="col-md-3">
         <label>Customer</label>
         <select class="form-control" formControlName="customer">
-          <option value="">Select Customer</option>
-          <option *ngFor="let c of customers" [value]="c.id">{{ c.name }}</option>
-        </select>
+  <option value="">Select Customer</option>
+  <option *ngFor="let c of customers" [value]="c.id">{{ c.name }}</option>
+</select>
+
       </div>
       <div class="col-md-3 d-flex align-items-end">
         <input type="text" class="form-control me-2" placeholder="New Customer Name" [(ngModel)]="newCustomerName" [ngModelOptions]="{standalone: true}">
@@ -77,7 +78,10 @@
       </div>
     </div>
 
-    <button type="submit" class="btn btn-primary mt-3">{{ orderId ? 'Update' : 'Save' }}</button>
+   <button type="submit" class="btn btn-primary mt-3">
+  {{ isEditMode ? 'Update' : 'Save' }}
+</button>
+
     <button type="button" class="btn btn-secondary mt-3 ms-2" (click)="router.navigate(['/orders'])">Cancel</button>
   </form>
 </div>

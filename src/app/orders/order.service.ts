@@ -20,7 +20,7 @@ export class OrderService {
     return this.http.get<any[]>(this.apiUrl, { params: httpParams });
   }
 
-  getOrder(id: number): Observable<any> {
+  getOrder(id: any): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/${id}`);
   }
 
@@ -28,9 +28,10 @@ export class OrderService {
     return this.http.post<any>(this.apiUrl, order);
   }
 
-  updateOrder(id: number, order: any): Observable<any> {
-    return this.http.put<any>(`${this.apiUrl}/${id}`, order);
-  }
+ updateOrder(id: string | number, order: any): Observable<any> {
+  return this.http.patch<any>(`${this.apiUrl}/${id}`, order);
+}
+
 
   deleteOrder(id: number): Observable<any> {
     return this.http.delete<any>(`${this.apiUrl}/${id}`);
