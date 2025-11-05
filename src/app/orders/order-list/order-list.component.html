@@ -1,46 +1,82 @@
 <div class="d-flex justify-content-between align-items-center mb-3">
-  <!-- Search Box -->
-  <div class="input-group w-50">
-    <input
-      type="text"
-      class="form-control"
-      placeholder="Search orders..."
-      [(ngModel)]="searchTerm"
-      (input)="onSearchInput()"
-    />
-    <button class="btn btn-primary" (click)="filterOrders()">Search</button>
+  <!-- Left side: Search + Status + Date range -->
+  <div class="d-flex gap-2 w-75">
+    <!-- Search box -->
+    <div class="input-group" style="min-width: 300px;">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Search orders..."
+        [(ngModel)]="searchTerm"
+      />
+      <button class="btn btn-primary" (click)="applyFilters()">Search</button>
+    </div>
+
+    <!-- Status filter -->
+    <select class="form-select" style="max-width:160px" [(ngModel)]="filterStatus" (change)="applyFilters()">
+      <option value="">All Status</option>
+      <option value="Pending">Pending</option>
+      <option value="Completed">Completed</option>
+      <option value="Cancelled">Cancelled</option>
+    </select>
+
+    <!-- From / To date pickers -->
+     <label class="mb-0">From:</label>
+    <input type="date" class="form-control" style="max-width:160px" [(ngModel)]="filterFrom" (change)="applyFilters()" placeholder="From" />
+    <label class="mb-0">To:</label>
+    <input type="date" class="form-control" style="max-width:160px" [(ngModel)]="filterTo" (change)="applyFilters()" placeholder="To" />
+
+    <!-- Clear filters button -->
+    <button class="btn btn-outline-secondary" (click)="clearFilters()">Clear</button>
   </div>
 
-  <!-- Create New Order Button -->
+  <!-- Right side: Create New Order button -->
   <div>
     <button class="btn btn-success" (click)="createOrder()">Create New Order</button>
   </div>
 </div>
 
+<!-- Orders Table with sorting -->
 <table class="table table-bordered table-hover">
   <thead class="table-light">
     <tr>
-      <th>Order No</th>
-      <th>Customer</th>
-      <th>Date</th>
-      <th>Status</th>
-      <th>Total</th>
+      <th (click)="setSort('orderNo')" style="cursor:pointer">
+        Order No
+        <span *ngIf="sortBy==='orderNo'">{{ sortDir==='asc'?'▲':'▼' }}</span>
+      </th>
+      <th (click)="setSort('customer')" style="cursor:pointer">
+        Customer
+        <span *ngIf="sortBy==='customer'">{{ sortDir==='asc'?'▲':'▼' }}</span>
+      </th>
+      <th (click)="setSort('orderDate')" style="cursor:pointer">
+        Date
+        <span *ngIf="sortBy==='orderDate'">{{ sortDir==='asc'?'▲':'▼' }}</span>
+      </th>
+      <th (click)="setSort('total')" style="cursor:pointer">
+        Total
+        <span *ngIf="sortBy==='total'">{{ sortDir==='asc'?'▲':'▼' }}</span>
+      </th>
+      <th (click)="setSort('status')" style="cursor:pointer">
+        Status
+        <span *ngIf="sortBy==='status'">{{ sortDir==='asc'?'▲':'▼' }}</span>
+      </th>
       <th>Actions</th>
     </tr>
   </thead>
+
   <tbody>
-    <tr *ngFor="let order of filteredOrders">
+    <tr *ngFor="let order of displayedOrders">
       <td>{{ order.orderNo }}</td>
-      <td>{{ order.customer?.name }}</td>
-      <td>{{ order.orderDate | date:'shortDate' }}</td>
-      <td>{{ order.status }}</td>
+      <td>{{ order.customer?.name || 'Guest' }}</td>
+      <td>{{ order.orderDate | date:'yyyy-MM-dd' }}</td>
       <td>{{ order.total | number:'1.2-2' }}</td>
+      <td>{{ order.status }}</td>
       <td>
         <button class="btn btn-sm btn-primary me-2" (click)="editOrder(order.id)">Edit</button>
         <button class="btn btn-sm btn-danger" (click)="deleteOrder(order.id)">Delete</button>
       </td>
     </tr>
-    <tr *ngIf="filteredOrders.length === 0">
+    <tr *ngIf="displayedOrders.length === 0">
       <td colspan="6" class="text-center">No orders found.</td>
     </tr>
   </tbody>

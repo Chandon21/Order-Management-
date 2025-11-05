@@ -51,7 +51,7 @@
     {
       "id": "6afb",
       "orderNo": "SO-2025-445",
-      "orderDate": "2025-11-05",
+      "orderDate": "2025-11-11",
       "customer": {
         "id": "3578",
         "name": "CG"
@@ -302,7 +302,7 @@
         "id": "1f2e",
         "name": "Chandan Ghosh"
       },
-      "status": "Completed",
+      "status": "Cancelled",
       "items": [
         {
           "product": "Laptop",
@@ -396,8 +396,8 @@
         }
       ],
       "vat": 10,
-      "discount": 8,
-      "total": 127500
+      "discount": 10,
+      "total": 125000
     },
     {
       "id": "6cf5",
@@ -484,6 +484,60 @@
       "customer": {
         "id": "33db",
         "name": "University"
+      },
+      "status": "Completed",
+      "items": [
+        {
+          "product": "Laptop",
+          "qty": 1,
+          "price": 100000,
+          "total": 100000
+        },
+        {
+          "product": "Laptop",
+          "qty": 1,
+          "price": 100000,
+          "total": 100000
+        }
+      ],
+      "vat": 10,
+      "discount": 10,
+      "total": 200000
+    },
+    {
+      "id": "9127",
+      "orderNo": "SO-2025-406",
+      "orderDate": "2025-11-08",
+      "customer": {
+        "id": "1f2e",
+        "name": "Chandan Ghosh"
+      },
+      "status": "Pending",
+      "items": [
+        {
+          "product": "Laptop",
+          "qty": 1,
+          "price": 1000000,
+          "total": 1000000
+        },
+        {
+          "product": "Laptop",
+          "qty": 1,
+          "price": 1000000,
+          "total": 1000000
+        }
+      ],
+      "vat": 10,
+      "discount": 5,
+      "total": 2100000
+    },
+    {
+      "id": "3f82",
+      "orderNo": "SO-2025-772",
+      "orderDate": "2025-11-05",
+      "customer": {
+        "id": "eff7",
+        "name": "Tangail"
       },
       "status": "Completed",
       "items": [
@@ -661,6 +715,18 @@
     {
       "id": "33db",
       "name": "University"
+    },
+    {
+      "id": "b21e",
+      "name": "abcde"
+    },
+    {
+      "id": "ff2b",
+      "name": "Guest Customer"
+    },
+    {
+      "id": "eff7",
+      "name": "Tangail"
     }
   ],
   "products": [
