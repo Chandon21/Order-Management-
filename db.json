@@ -169,39 +169,6 @@
       "total": 93098.25
     },
     {
-      "id": "983f",
-      "orderNo": "SO-2025-465",
-      "orderDate": "2025-11-04",
-      "customer": {
-        "id": "853c",
-        "name": "Chandan"
-      },
-      "status": "Completed",
-      "items": [
-        {
-          "product": "Laptop",
-          "qty": 1,
-          "price": 100000,
-          "total": 100000
-        },
-        {
-          "product": "Printer",
-          "qty": 1,
-          "price": 20000,
-          "total": 20000
-        },
-        {
-          "product": "Headset",
-          "qty": 1,
-          "price": 5000,
-          "total": 5000
-        }
-      ],
-      "vat": 5,
-      "discount": 15,
-      "total": 112500
-    },
-    {
       "id": "9e04",
       "orderNo": "SO-2025-722",
       "orderDate": "2025-11-10",
@@ -346,19 +313,19 @@
         {
           "product": "Laptop",
           "qty": 1,
-          "price": 1000000,
-          "total": 1000000
+          "price": 100000,
+          "total": 100000
         },
         {
           "product": "Laptop",
           "qty": 1,
-          "price": 1000000,
-          "total": 1000000
+          "price": 100000,
+          "total": 100000
         }
       ],
       "vat": 10,
       "discount": 5,
-      "total": 2100000
+      "total": 210000
     },
     {
       "id": "3f82",
@@ -434,6 +401,33 @@
       "vat": 5,
       "discount": 5,
       "total": 80000
+    },
+    {
+      "id": "fe0c",
+      "orderNo": "SO-2025-540",
+      "orderDate": "2025-11-05",
+      "customer": {
+        "id": "1f2e",
+        "name": "Chandan Ghosh"
+      },
+      "status": "Completed",
+      "items": [
+        {
+          "product": "Laptop",
+          "qty": 1,
+          "price": 100000,
+          "total": 100000
+        },
+        {
+          "product": "Headset",
+          "qty": 1,
+          "price": 10000,
+          "total": 10000
+        }
+      ],
+      "vat": 5,
+      "discount": 5,
+      "total": 110000
     }
   ],
   "customers": [

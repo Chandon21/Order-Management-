@@ -39,6 +39,8 @@ export class OrderListComponent implements OnInit {
       this.filterTo = q.get('to') || '';
       this.sortBy = q.get('sortBy') || this.sortBy;
       this.sortDir = (q.get('sortDir') as 'asc'|'desc') || this.sortDir;
+      this.currentPage = +(q.get('page') || 1);
+      this.pageSize = +(q.get('pageSize') || 5);
       this.loadOrders();
     });
   }
@@ -125,12 +127,17 @@ export class OrderListComponent implements OnInit {
 
   updateQueryParams() {
     const q: any = {};
+    //filter
     if (this.searchTerm) q.search = this.searchTerm;
     if (this.filterStatus) q.status = this.filterStatus;
     if (this.filterFrom) q.from = this.filterFrom;
     if (this.filterTo) q.to = this.filterTo;
+    //Sorting
     if (this.sortBy) q.sortBy = this.sortBy;
     if (this.sortDir) q.sortDir = this.sortDir;
+    //pagination add for page
+    q.page = this.currentPage;
+  q.pageSize = this.pageSize;
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: q,
@@ -142,6 +149,7 @@ export class OrderListComponent implements OnInit {
     if (page < 1 || page > this.totalPages) return;
     this.currentPage = page;
     this.applySort(); // re-apply sort to recalc displayedOrders for the new page
+    this.updateQueryParams();
   }
 
   // ---------- Navigation / Actions ----------

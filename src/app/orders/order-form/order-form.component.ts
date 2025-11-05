@@ -31,7 +31,8 @@ export class OrderFormComponent implements OnInit {
     public router: Router,
     private route: ActivatedRoute,
     private orderService: OrderService,
-    private customerService: CustomerService
+    private customerService: CustomerService,
+    //private productService: ProductService 
   ) {}
 
   ngOnInit(): void {
