@@ -20,6 +20,11 @@ export class OrderListComponent implements OnInit {
   public sortBy: string = 'orderDate';
   public sortDir: 'asc' | 'desc' = 'desc';
 
+  // ---------- Pagination ----------
+  public currentPage: number = 1;
+  public pageSize: number = 5; // orders per page
+  public totalPages: number = 1;
+
   constructor(
     private orderService: OrderService,
     public router: Router,
@@ -95,7 +100,11 @@ export class OrderListComponent implements OnInit {
       return 0;
     });
 
-    this.displayedOrders = arr;
+    // ---------- Apply Pagination ----------
+    this.totalPages = Math.ceil(arr.length / this.pageSize);
+    const start = (this.currentPage - 1) * this.pageSize;
+    const end = start + this.pageSize;
+    this.displayedOrders = arr.slice(start, end);
   }
 
   setSort(field: string) {
@@ -110,6 +119,7 @@ export class OrderListComponent implements OnInit {
     this.filterStatus = '';
     this.filterFrom = '';
     this.filterTo = '';
+    this.currentPage = 1; // reset to first page
     this.applyFilters();
   }
 
@@ -121,7 +131,6 @@ export class OrderListComponent implements OnInit {
     if (this.filterTo) q.to = this.filterTo;
     if (this.sortBy) q.sortBy = this.sortBy;
     if (this.sortDir) q.sortDir = this.sortDir;
-
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: q,
@@ -129,6 +138,13 @@ export class OrderListComponent implements OnInit {
     });
   }
 
+  changePage(page: number) {
+    if (page < 1 || page > this.totalPages) return;
+    this.currentPage = page;
+    this.applySort(); // re-apply sort to recalc displayedOrders for the new page
+  }
+
+  // ---------- Navigation / Actions ----------
   createOrder() {
     this.router.navigate(['/orders/new']);
   }

@@ -8,8 +8,9 @@
         class="form-control"
         placeholder="Search orders..."
         [(ngModel)]="searchTerm"
+        (ngModelChange)="applyFilters()"
       />
-      <button class="btn btn-primary" (click)="applyFilters()">Search</button>
+      <!--<button class="btn btn-primary" (click)="applyFilters()">Search</button>-->
     </div>
 
     <!-- Status filter -->
@@ -21,10 +22,10 @@
     </select>
 
     <!-- From / To date pickers -->
-     <label class="mb-0">From:</label>
-    <input type="date" class="form-control" style="max-width:160px" [(ngModel)]="filterFrom" (change)="applyFilters()" placeholder="From" />
+    <label class="mb-0">From:</label>
+    <input type="date" class="form-control" style="max-width:160px" [(ngModel)]="filterFrom" (change)="applyFilters()" />
     <label class="mb-0">To:</label>
-    <input type="date" class="form-control" style="max-width:160px" [(ngModel)]="filterTo" (change)="applyFilters()" placeholder="To" />
+    <input type="date" class="form-control" style="max-width:160px" [(ngModel)]="filterTo" (change)="applyFilters()" />
 
     <!-- Clear filters button -->
     <button class="btn btn-outline-secondary" (click)="clearFilters()">Clear</button>
@@ -81,3 +82,21 @@
     </tr>
   </tbody>
 </table>
+
+<!-- Pagination -->
+<nav *ngIf="totalPages > 1" aria-label="Page navigation">
+  <ul class="pagination justify-content-center mt-3">
+    <li class="page-item" [class.disabled]="currentPage === 1">
+      <button class="page-link" (click)="changePage(currentPage - 1)">Previous</button>
+    </li>
+
+    <li class="page-item" *ngFor="let page of [].constructor(totalPages); let i = index"
+        [class.active]="currentPage === (i + 1)">
+      <button class="page-link" (click)="changePage(i + 1)">{{ i + 1 }}</button>
+    </li>
+
+    <li class="page-item" [class.disabled]="currentPage === totalPages">
+      <button class="page-link" (click)="changePage(currentPage + 1)">Next</button>
+    </li>
+  </ul>
+</nav>
