@@ -22,7 +22,7 @@ export class OrderListComponent implements OnInit {
 
   // ---------- Pagination ----------
   public currentPage: number = 1;
-  public pageSize: number = 5; // orders per page
+  public pageSize: number = 10; // orders per page
   public totalPages: number = 1;
 
   constructor(
@@ -40,7 +40,7 @@ export class OrderListComponent implements OnInit {
       this.sortBy = q.get('sortBy') || this.sortBy;
       this.sortDir = (q.get('sortDir') as 'asc'|'desc') || this.sortDir;
       this.currentPage = +(q.get('page') || 1);
-      this.pageSize = +(q.get('pageSize') || 5);
+      this.pageSize = +(q.get('pageSize') || 10);
       this.loadOrders();
     });
   }
@@ -137,7 +137,7 @@ export class OrderListComponent implements OnInit {
     if (this.sortDir) q.sortDir = this.sortDir;
     //pagination add for page
     q.page = this.currentPage;
-  q.pageSize = this.pageSize;
+    q.pageSize = this.pageSize;
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: q,
@@ -151,6 +151,12 @@ export class OrderListComponent implements OnInit {
     this.applySort(); // re-apply sort to recalc displayedOrders for the new page
     this.updateQueryParams();
   }
+  changePageSize(size: number) {
+  this.pageSize = size;
+  this.currentPage = 1; // reset to first page
+  this.applySort();     // re-slice data
+  this.updateQueryParams(); // sync URL
+}
 
   // ---------- Navigation / Actions ----------
   createOrder() {
