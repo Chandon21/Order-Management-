@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { OrderService } from '../order.service';
 import { CustomerService } from '../customer.service';
+import { ProductService } from '../product.service';
 
 @Component({
   selector: 'app-order-form',
@@ -12,16 +13,7 @@ import { CustomerService } from '../customer.service';
 export class OrderFormComponent implements OnInit {
   public orderForm!: FormGroup;
   public customers: any[] = [];
-  public products = [
-    { name: 'Laptop', price: 800 },
-    { name: 'Mouse', price: 50 },
-    { name: 'Keyboard', price: 100 },
-    { name: 'Monitor', price: 300 },
-    { name: 'Printer', price: 150 },
-    { name: 'Headset', price: 70 },
-    { name: 'Webcam', price: 90 },
-    { name: 'Speaker', price: 60 }
-  ];
+  public products: any[] = [];
   public orderId: string | null = null;
   public isEditMode: boolean = false;
   public newCustomerName: string = '';
@@ -32,7 +24,7 @@ export class OrderFormComponent implements OnInit {
     private route: ActivatedRoute,
     private orderService: OrderService,
     private customerService: CustomerService,
-    //private productService: ProductService 
+    private productService: ProductService
   ) {}
 
   ngOnInit(): void {
@@ -40,55 +32,27 @@ export class OrderFormComponent implements OnInit {
     this.isEditMode = !!orderIdParam && orderIdParam !== 'new';
     this.orderId = this.isEditMode ? orderIdParam : null;
 
+    // Initialize form
     this.orderForm = this.fb.group({
       orderNo: [''],
       orderDate: ['', Validators.required],
       customer: ['', Validators.required],
       status: ['Pending', Validators.required],
       items: this.fb.array([]),
-      vat: [0],
-      discount: [0],
+      vat: [0, [Validators.min(0)]],
+      discount: [0, [Validators.min(0)]],
       total: [{ value: 0, disabled: true }]
     });
 
+    // Fetch customers
     this.customerService.getCustomers().subscribe(customers => {
-      // Normalize all customer IDs as strings
       this.customers = customers.map(c => ({ ...c, id: String(c.id) }));
+      this.initOrder();
+    });
 
-      if (this.isEditMode && this.orderId !== null) {
-        this.orderService.getOrder(this.orderId).subscribe(order => {
-          const customerId = String(order.customer?.id);
-          const customerExists = this.customers.some(c => c.id === customerId);
-
-          if (!customerExists && order.customer?.name) {
-            const fallbackCustomer = { id: customerId, name: order.customer.name };
-            this.customers.push(fallbackCustomer);
-          }
-
-          this.orderForm.patchValue({
-            orderNo: order.orderNo,
-            orderDate: order.orderDate,
-            customer: customerId,
-            status: order.status,
-            vat: order.vat || 0,
-            discount: order.discount || 0
-          });
-
-          const validProductNames = this.products.map(p => p.name);
-          order.items.forEach((item: any) => {
-            if (!validProductNames.includes(item.product)) {
-              this.products.push({ name: item.product, price: item.price || 0 });
-            }
-            this.addItem(item);
-          });
-
-          this.calculateTotal();
-        });
-      } else {
-        this.generateOrderNo();
-        this.orderForm.get('orderDate')?.setValue(new Date().toISOString().substring(0, 10));
-        this.addItem();
-      }
+    // Fetch products
+    this.productService.getProducts().subscribe(products => {
+      this.products = products;
     });
   }
 
@@ -96,11 +60,46 @@ export class OrderFormComponent implements OnInit {
     return this.orderForm.get('items') as FormArray;
   }
 
+  initOrder() {
+    if (this.isEditMode && this.orderId !== null) {
+      this.orderService.getOrder(this.orderId).subscribe(order => {
+        const customerId = String(order.customer?.id);
+        const customerExists = this.customers.some(c => c.id === customerId);
+        if (!customerExists && order.customer?.name) {
+          this.customers.push({ id: customerId, name: order.customer.name });
+        }
+
+        this.orderForm.patchValue({
+          orderNo: order.orderNo,
+          orderDate: order.orderDate,
+          customer: customerId,
+          status: order.status,
+          vat: order.vat || 0,
+          discount: order.discount || 0
+        });
+
+        const validProductNames = this.products.map(p => p.name);
+        order.items.forEach((item: any) => {
+          if (!validProductNames.includes(item.product)) {
+            this.products.push({ name: item.product, price: item.price || 0 });
+          }
+          this.addItem(item);
+        });
+
+        this.calculateTotal();
+      });
+    } else {
+      this.generateOrderNo();
+      this.orderForm.get('orderDate')?.setValue(new Date().toISOString().substring(0, 10));
+      this.addItem();
+    }
+  }
+
   addItem(item?: any) {
     this.items.push(this.fb.group({
       product: [item?.product || '', Validators.required],
       qty: [item?.qty || 1, [Validators.required, Validators.min(1)]],
-      price: [item?.price || 0, Validators.required],
+      price: [item?.price || 0, [Validators.required, Validators.min(0)]],
       total: [{ value: item?.total || 0, disabled: true }]
     }));
   }

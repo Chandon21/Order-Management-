@@ -15,7 +15,8 @@ import { OrderFormComponent } from './order-form/order-form.component';
     CommonModule,        // Needed for *ngFor, pipes like date/currency
     ReactiveFormsModule, // Needed for [formGroup], FormArray
     FormsModule,         // Needed for [(ngModel)]
-    RouterModule         // Needed for routerLink
+    RouterModule     // Needed for routerLink
+    
   ],
   exports: [
     OrderListComponent,
