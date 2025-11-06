@@ -17,7 +17,7 @@ A complete **Sales Order Management System** built with **Angular** and **JSON S
 
 
 ## 🧰 Technologies Used
-
+- Angular
 - TypeScript
 - Bootstrap
 - Reactive Forms
