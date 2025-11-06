@@ -20,9 +20,9 @@ export class OrderListComponent implements OnInit {
   public sortBy: string = 'orderDate';
   public sortDir: 'asc' | 'desc' = 'desc';
 
-  // ---------- Pagination ----------
+  
   public currentPage: number = 1;
-  public pageSize: number = 10; // orders per page
+  public pageSize: number = 10; 
   public totalPages: number = 1;
 
   constructor(
@@ -102,7 +102,7 @@ export class OrderListComponent implements OnInit {
       return 0;
     });
 
-    // ---------- Apply Pagination ----------
+    
     this.totalPages = Math.ceil(arr.length / this.pageSize);
     const start = (this.currentPage - 1) * this.pageSize;
     const end = start + this.pageSize;
@@ -121,21 +121,21 @@ export class OrderListComponent implements OnInit {
     this.filterStatus = '';
     this.filterFrom = '';
     this.filterTo = '';
-    this.currentPage = 1; // reset to first page
+    this.currentPage = 1; 
     this.applyFilters();
   }
 
   updateQueryParams() {
     const q: any = {};
-    //filter
+ 
     if (this.searchTerm) q.search = this.searchTerm;
     if (this.filterStatus) q.status = this.filterStatus;
     if (this.filterFrom) q.from = this.filterFrom;
     if (this.filterTo) q.to = this.filterTo;
-    //Sorting
+   
     if (this.sortBy) q.sortBy = this.sortBy;
     if (this.sortDir) q.sortDir = this.sortDir;
-    //pagination add for page
+    
     q.page = this.currentPage;
     q.pageSize = this.pageSize;
     this.router.navigate([], {
@@ -148,17 +148,17 @@ export class OrderListComponent implements OnInit {
   changePage(page: number) {
     if (page < 1 || page > this.totalPages) return;
     this.currentPage = page;
-    this.applySort(); // re-apply sort to recalc displayedOrders for the new page
+    this.applySort(); 
     this.updateQueryParams();
   }
   changePageSize(size: number) {
   this.pageSize = size;
-  this.currentPage = 1; // reset to first page
-  this.applySort();     // re-slice data
-  this.updateQueryParams(); // sync URL
+  this.currentPage = 1; 
+  this.applySort();     
+  this.updateQueryParams(); 
 }
 
-  // ---------- Navigation / Actions ----------
+  
   createOrder() {
     this.router.navigate(['/orders/new']);
   }
