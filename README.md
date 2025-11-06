@@ -30,7 +30,7 @@ A complete **Sales Order Management System** built with **Angular** and **JSON S
 ### 1️⃣ Clone the Repository
 
 bash
-git clone https://github.com/ChandonGhosh/sales-order-management.git
+git clone https://github.com/Chandon21/Order-Management-.git
 cd sales-order-management
 
 Start JSON Server:
