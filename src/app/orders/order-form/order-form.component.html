@@ -1,22 +1,31 @@
 <div class="container mt-3">
   <form [formGroup]="orderForm" (ngSubmit)="save()">
+    <!-- Order Info -->
     <div class="row mb-3">
       <div class="col-md-3">
         <label>Order No</label>
         <input type="text" class="form-control" formControlName="orderNo" readonly>
       </div>
+
       <div class="col-md-3">
         <label>Order Date</label>
         <input type="date" class="form-control" formControlName="orderDate">
+        <div *ngIf="orderForm.get('orderDate')?.touched && orderForm.get('orderDate')?.invalid" class="text-danger small">
+          Order date is required.
+        </div>
       </div>
+
       <div class="col-md-3">
         <label>Customer</label>
         <select class="form-control" formControlName="customer">
-  <option value="">Select Customer</option>
-  <option *ngFor="let c of customers" [value]="c.id">{{ c.name }}</option>
-</select>
-
+          <option value="">Select Customer</option>
+          <option *ngFor="let c of customers" [value]="c.id">{{ c.name }}</option>
+        </select>
+        <div *ngIf="orderForm.get('customer')?.touched && orderForm.get('customer')?.invalid" class="text-danger small">
+          Customer is required.
+        </div>
       </div>
+
       <div class="col-md-3 d-flex align-items-end">
         <input type="text" class="form-control me-2" placeholder="New Customer Name" [(ngModel)]="newCustomerName" [ngModelOptions]="{standalone: true}">
         <button type="button" class="btn btn-primary me-2" (click)="addNewCustomer()">Add</button>
@@ -24,6 +33,7 @@
       </div>
     </div>
 
+    <!-- Status -->
     <div class="row mb-3">
       <div class="col-md-3">
         <label>Status</label>
@@ -35,6 +45,7 @@
       </div>
     </div>
 
+    <!-- Items Table -->
     <table class="table table-bordered">
       <thead>
         <tr>
@@ -45,16 +56,33 @@
           <th>Action</th>
         </tr>
       </thead>
+
       <tbody formArrayName="items">
         <tr *ngFor="let item of items.controls; let i = index" [formGroupName]="i">
           <td>
-            <select class="form-control" formControlName="product">
+            <select class="form-control" formControlName="product" (change)="calculateTotal()">
               <option value="">Select Product</option>
               <option *ngFor="let p of products" [value]="p.name">{{ p.name }}</option>
             </select>
+            <div *ngIf="item.get('product')?.touched && item.get('product')?.invalid" class="text-danger small">
+              Product is required.
+            </div>
           </td>
-          <td><input type="number" class="form-control" formControlName="qty" (input)="calculateTotal()"></td>
-          <td><input type="number" class="form-control" formControlName="price" (input)="calculateTotal()"></td>
+
+          <td>
+            <input type="number" class="form-control" formControlName="qty" (input)="calculateTotal()">
+            <div *ngIf="item.get('qty')?.touched && item.get('qty')?.invalid" class="text-danger small">
+              Quantity must be at least 1.
+            </div>
+          </td>
+
+          <td>
+            <input type="number" class="form-control" formControlName="price" (input)="calculateTotal()">
+            <div *ngIf="item.get('price')?.touched && item.get('price')?.invalid" class="text-danger small">
+              Price must be 0 or greater.
+            </div>
+          </td>
+
           <td><input type="number" class="form-control" formControlName="total" readonly></td>
           <td><button type="button" class="btn btn-danger" (click)="removeItem(i)">Remove</button></td>
         </tr>
@@ -63,24 +91,28 @@
 
     <button type="button" class="btn btn-success mb-3" (click)="addItem()">Add Product</button>
 
+    <!-- VAT, Discount, Total -->
     <div class="row">
       <div class="col-md-2">
         <label>VAT (%)</label>
         <input type="number" class="form-control" formControlName="vat" (input)="calculateTotal()">
       </div>
+
       <div class="col-md-2">
         <label>Discount (%)</label>
         <input type="number" class="form-control" formControlName="discount" (input)="calculateTotal()">
       </div>
+
       <div class="col-md-2">
         <label>Grand Total</label>
         <input type="number" class="form-control" formControlName="total" readonly>
       </div>
     </div>
 
-   <button type="submit" class="btn btn-primary mt-3">
-  {{ isEditMode ? 'Update' : 'Save' }}
-</button>
+    <!-- Buttons -->
+    <button type="submit" class="btn btn-primary mt-3">
+      {{ isEditMode ? 'Update' : 'Save' }}
+    </button>
 
     <button type="button" class="btn btn-secondary mt-3 ms-2" (click)="router.navigate(['/orders'])">Cancel</button>
   </form>

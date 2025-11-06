@@ -32,25 +32,23 @@ export class OrderFormComponent implements OnInit {
     this.isEditMode = !!orderIdParam && orderIdParam !== 'new';
     this.orderId = this.isEditMode ? orderIdParam : null;
 
-    // Initialize form
+    // Initialize form with validation
     this.orderForm = this.fb.group({
       orderNo: [''],
       orderDate: ['', Validators.required],
       customer: ['', Validators.required],
       status: ['Pending', Validators.required],
-      items: this.fb.array([]),
+      items: this.fb.array([], Validators.required),
       vat: [0, [Validators.min(0)]],
       discount: [0, [Validators.min(0)]],
       total: [{ value: 0, disabled: true }]
     });
 
-    // Fetch customers
     this.customerService.getCustomers().subscribe(customers => {
       this.customers = customers.map(c => ({ ...c, id: String(c.id) }));
       this.initOrder();
     });
 
-    // Fetch products
     this.productService.getProducts().subscribe(products => {
       this.products = products;
     });

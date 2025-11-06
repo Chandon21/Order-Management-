@@ -568,12 +568,12 @@
       "total": 200000
     },
     {
-      "id": "0bf8",
-      "orderNo": "SO-2025-723",
+      "id": "966e",
+      "orderNo": "SO-2025-221",
       "orderDate": "2025-11-06",
       "customer": {
-        "id": "7050",
-        "name": "abcde"
+        "id": "ca89",
+        "name": "Demo"
       },
       "status": "Completed",
       "items": [
@@ -584,15 +584,15 @@
           "total": 100000
         },
         {
-          "product": "Smartphone",
+          "product": "Headset",
           "qty": 1,
-          "price": 100000,
-          "total": 100000
+          "price": 10000,
+          "total": 10000
         }
       ],
       "vat": 10,
-      "discount": 5,
-      "total": 210000
+      "discount": 10,
+      "total": 110000
     }
   ],
   "customers": [
@@ -787,6 +787,10 @@
     {
       "id": "7050",
       "name": "abcde"
+    },
+    {
+      "id": "ca89",
+      "name": "Demo"
     }
   ],
   "products": [
