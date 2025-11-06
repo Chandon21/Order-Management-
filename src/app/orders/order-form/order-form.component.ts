@@ -136,10 +136,13 @@ export class OrderFormComponent implements OnInit {
 
     if (this.isEditMode && this.orderId !== null) {
       this.orderService.updateOrder(this.orderId, orderData).subscribe(() => {
+         alert('Order updated successfully'); 
         this.router.navigate(['/orders']);
       });
     } else {
       this.orderService.createOrder(orderData).subscribe(() => {
+         alert('Order created successfully');
+
         this.router.navigate(['/orders']);
       });
     }
