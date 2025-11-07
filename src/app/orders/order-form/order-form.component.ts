@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormArray, Validators, AbstractControl } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { OrderService } from '../order.service';
 import { CustomerService } from '../customer.service';
 import { ProductService } from '../product.service';
+import { Order, OrderItem, Product, Customer } from '../../models/order.model';
 
 @Component({
   selector: 'app-order-form',
@@ -11,12 +12,12 @@ import { ProductService } from '../product.service';
   styleUrls: ['./order-form.component.css']
 })
 export class OrderFormComponent implements OnInit {
-  public orderForm!: FormGroup;
-  public customers: any[] = [];
-  public products: any[] = [];
-  public orderId: string | null = null;
-  public isEditMode: boolean = false;
-  public newCustomerName: string = '';
+  public orderForm!: FormGroup;  
+  public customers: Customer[] = [];  
+  public products: Product[] = [];    
+  public orderId: string | null = null;  
+  public isEditMode = false;  
+  public newCustomerName = ''; 
 
   constructor(
     private fb: FormBuilder,
@@ -44,23 +45,27 @@ export class OrderFormComponent implements OnInit {
       total: [{ value: 0, disabled: true }]
     });
 
-    this.customerService.getCustomers().subscribe(customers => {
+    
+    this.customerService.getCustomers().subscribe((customers: Customer[]) => {
       this.customers = customers.map(c => ({ ...c, id: String(c.id) }));
       this.initOrder();
     });
 
-    this.productService.getProducts().subscribe(products => {
+    
+    this.productService.getProducts().subscribe((products: Product[]) => {
       this.products = products;
     });
   }
 
+  
   get items(): FormArray {
     return this.orderForm.get('items') as FormArray;
   }
 
-  initOrder() {
+  
+  initOrder(): void {
     if (this.isEditMode && this.orderId !== null) {
-      this.orderService.getOrder(this.orderId).subscribe(order => {
+      this.orderService.getOrder(this.orderId).subscribe((order: Order) => {
         const customerId = String(order.customer?.id);
         const customerExists = this.customers.some(c => c.id === customerId);
         if (!customerExists && order.customer?.name) {
@@ -77,9 +82,9 @@ export class OrderFormComponent implements OnInit {
         });
 
         const validProductNames = this.products.map(p => p.name);
-        order.items.forEach((item: any) => {
+        order.items.forEach((item: OrderItem) => {
           if (!validProductNames.includes(item.product)) {
-            this.products.push({ name: item.product, price: item.price || 0 });
+            this.products.push({ id: '', name: item.product, price: item.price || 0 });
           }
           this.addItem(item);
         });
@@ -93,7 +98,8 @@ export class OrderFormComponent implements OnInit {
     }
   }
 
-  addItem(item?: any) {
+  
+  addItem(item?: OrderItem): void {
     this.items.push(this.fb.group({
       product: [item?.product || '', Validators.required],
       qty: [item?.qty || 1, [Validators.required, Validators.min(1)]],
@@ -102,71 +108,81 @@ export class OrderFormComponent implements OnInit {
     }));
   }
 
-  removeItem(index: number) {
+  
+  removeItem(index: number): void {
     this.items.removeAt(index);
     this.calculateTotal();
   }
 
-  calculateTotal() {
+  
+  calculateTotal(): void {
     let subtotal = 0;
-    this.items.controls.forEach(group => {
-      const qty = group.get('qty')?.value || 0;
-      const price = group.get('price')?.value || 0;
+
+    this.items.controls.forEach((group: AbstractControl) => {
+      const qty = group.get('qty')?.value ?? 0;
+      const price = group.get('price')?.value ?? 0;
       const total = qty * price;
       group.get('total')?.setValue(total);
       subtotal += total;
     });
 
-    const vat = this.orderForm.get('vat')?.value || 0;
-    const discount = this.orderForm.get('discount')?.value || 0;
+    const vat = this.orderForm.get('vat')?.value ?? 0;
+    const discount = this.orderForm.get('discount')?.value ?? 0;
     const grandTotal = subtotal + subtotal * (vat / 100) - subtotal * (discount / 100);
     this.orderForm.get('total')?.setValue(grandTotal);
   }
 
-  save() {
+  
+  save(): void {
     if (this.orderForm.invalid) {
       this.orderForm.markAllAsTouched();
       return;
     }
 
-    const orderData = this.orderForm.getRawValue();
-    const customerId = orderData.customer;
-    const customerObj = this.customers.find(c => c.id === customerId);
-    orderData.customer = customerObj;
+    const formValue = this.orderForm.getRawValue();
+    const selectedCustomer = this.customers.find(c => c.id === formValue.customer);
+    if (!selectedCustomer) return;
 
-    if (this.isEditMode && this.orderId !== null) {
+    const orderData: Order = {
+      ...formValue,
+      customer: selectedCustomer,
+      items: formValue.items,
+      total: formValue.total
+    };
+
+    if (this.isEditMode && this.orderId) {
       this.orderService.updateOrder(this.orderId, orderData).subscribe(() => {
-         alert('Order updated successfully'); 
         this.router.navigate(['/orders']);
       });
     } else {
       this.orderService.createOrder(orderData).subscribe(() => {
-         alert('Order created successfully');
-
         this.router.navigate(['/orders']);
       });
     }
   }
 
-  addNewCustomer() {
+  
+  addNewCustomer(): void {
     if (!this.newCustomerName.trim()) return;
-    const newCustomer = { name: this.newCustomerName };
-    this.customerService.createCustomer(newCustomer).subscribe(res => {
+    const newCustomer: Omit<Customer, 'id'> = { name: this.newCustomerName };
+    this.customerService.createCustomer(newCustomer).subscribe((res: Customer) => {
       this.customers.push({ ...res, id: String(res.id) });
       this.orderForm.get('customer')?.setValue(res.id);
       this.newCustomerName = '';
     });
   }
 
-  addGuestCustomer() {
-    const guestCustomer = { name: 'Guest Customer' };
-    this.customerService.createCustomer(guestCustomer).subscribe(res => {
+  
+  addGuestCustomer(): void {
+    const guestCustomer: Omit<Customer, 'id'> = { name: 'Guest Customer' };
+    this.customerService.createCustomer(guestCustomer).subscribe((res: Customer) => {
       this.customers.push({ ...res, id: String(res.id) });
       this.orderForm.get('customer')?.setValue(res.id);
     });
   }
 
-  generateOrderNo() {
+  
+  generateOrderNo(): void {
     const year = new Date().getFullYear();
     const randomNumber = Math.floor(100 + Math.random() * 900);
     this.orderForm.get('orderNo')?.setValue(`SO-${year}-${randomNumber}`);

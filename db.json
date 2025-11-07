@@ -4,7 +4,7 @@
       "id": "1",
       "orderNo": "SO-2025-001",
       "customer": {
-        "id": 1,
+        "id": "1",
         "name": "John Doe"
       },
       "orderDate": "2025-11-04",
@@ -14,9 +14,15 @@
           "qty": 2,
           "price": 800,
           "total": 1600
+        },
+        {
+          "product": "Printer",
+          "qty": 1,
+          "price": 20,
+          "total": 20
         }
       ],
-      "total": 1680,
+      "total": 1701,
       "status": "Completed",
       "vat": 5,
       "discount": 0
@@ -90,17 +96,11 @@
           "qty": 1,
           "price": 100000,
           "total": 100000
-        },
-        {
-          "product": "Keyboard",
-          "qty": 1,
-          "price": 500,
-          "total": 500
         }
       ],
       "vat": 5,
       "discount": 5,
-      "total": 100500
+      "total": 100000
     },
     {
       "id": "92af",
@@ -183,17 +183,11 @@
           "qty": 1,
           "price": 100000,
           "total": 100000
-        },
-        {
-          "product": "Keyboard",
-          "qty": 1,
-          "price": 5000,
-          "total": 5000
         }
       ],
       "vat": 5,
       "discount": 5,
-      "total": 105000
+      "total": 100000
     },
     {
       "id": "6cf5",
@@ -225,7 +219,7 @@
     {
       "id": "f3a7",
       "orderNo": "SO-2025-858",
-      "orderDate": "2025-11-05",
+      "orderDate": "2025-11-25",
       "customer": {
         "id": "3815",
         "name": "Efficient"
@@ -288,17 +282,11 @@
           "qty": 1,
           "price": 100000,
           "total": 100000
-        },
-        {
-          "product": "Laptop",
-          "qty": 1,
-          "price": 100000,
-          "total": 100000
         }
       ],
       "vat": 10,
       "discount": 10,
-      "total": 200000
+      "total": 100000
     },
     {
       "id": "9127",
@@ -568,12 +556,12 @@
       "total": 200000
     },
     {
-      "id": "966e",
-      "orderNo": "SO-2025-221",
-      "orderDate": "2025-11-06",
+      "id": "4734",
+      "orderNo": "SO-2025-636",
+      "orderDate": "2025-11-27",
       "customer": {
-        "id": "ca89",
-        "name": "Demo"
+        "id": "5305",
+        "name": "Testing"
       },
       "status": "Completed",
       "items": [
@@ -582,17 +570,74 @@
           "qty": 1,
           "price": 100000,
           "total": 100000
-        },
-        {
-          "product": "Headset",
-          "qty": 1,
-          "price": 10000,
-          "total": 10000
         }
       ],
       "vat": 10,
       "discount": 10,
-      "total": 110000
+      "total": 100000
+    },
+    {
+      "id": "0be5",
+      "orderNo": "SO-2025-312",
+      "orderDate": "2025-11-07",
+      "customer": {
+        "id": "1",
+        "name": "John Doe"
+      },
+      "status": "Completed",
+      "items": [
+        {
+          "product": "Laptop",
+          "qty": 1,
+          "price": 10,
+          "total": 10
+        }
+      ],
+      "vat": 0,
+      "discount": 0,
+      "total": 10
+    },
+    {
+      "id": "bc48",
+      "orderNo": "SO-2025-364",
+      "orderDate": "2025-11-07",
+      "customer": {
+        "id": "5305",
+        "name": "Testing"
+      },
+      "status": "Completed",
+      "items": [
+        {
+          "product": "Laptop",
+          "qty": 1,
+          "price": 100000,
+          "total": 100000
+        }
+      ],
+      "vat": 10,
+      "discount": 10,
+      "total": 100000
+    },
+    {
+      "id": "25aa",
+      "orderNo": "SO-2025-249",
+      "orderDate": "2025-11-07",
+      "customer": {
+        "id": "9495",
+        "name": "edit"
+      },
+      "status": "Pending",
+      "items": [
+        {
+          "product": "Laptop",
+          "qty": 1,
+          "price": 1000000,
+          "total": 1000000
+        }
+      ],
+      "vat": 5,
+      "discount": 5,
+      "total": 1000000
     }
   ],
   "customers": [
@@ -799,6 +844,18 @@
     {
       "id": "ed37",
       "name": "test"
+    },
+    {
+      "id": "5305",
+      "name": "Testing"
+    },
+    {
+      "id": "9495",
+      "name": "edit"
+    },
+    {
+      "id": "6b5a",
+      "name": "value"
     }
   ],
   "products": [

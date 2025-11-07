@@ -14,7 +14,7 @@
     </div>
 
     <!-- Status filter -->
-    <select class="form-select" style="max-width:160px" [(ngModel)]="filterStatus" (change)="applyFilters()">
+    <select class="form-select" style="max-width:160px" [(ngModel)]="filterStatus" (change)="onStatusChange()">
       <option value="">All Status</option>
       <option value="Pending">Pending</option>
       <option value="Completed">Completed</option>
@@ -23,9 +23,9 @@
 
     <!-- From / To date pickers -->
     <label class="mb-0">From:</label>
-    <input type="date" class="form-control" style="max-width:160px" [(ngModel)]="filterFrom" (change)="applyFilters()" />
+    <input type="date" class="form-control" style="max-width:160px" [(ngModel)]="filterFrom" (change)="onDateChange()" />
     <label class="mb-0">To:</label>
-    <input type="date" class="form-control" style="max-width:160px" [(ngModel)]="filterTo" (change)="applyFilters()" />
+    <input type="date" class="form-control" style="max-width:160px" [(ngModel)]="filterTo" (change)="onDateChange()" />
 
     <!-- Clear filters button -->
     <button class="btn btn-outline-secondary" (click)="clearFilters()">Clear</button>
@@ -73,8 +73,12 @@
       <td>{{ order.total | number:'1.2-2' }}</td>
       <td>{{ order.status }}</td>
       <td>
-        <button class="btn btn-sm btn-primary me-2" (click)="editOrder(order.id)">Edit</button>
-        <button class="btn btn-sm btn-danger" (click)="deleteOrder(order.id)">Delete</button>
+       <button class="btn btn-sm btn-primary me-2" 
+        (click)="order.id && editOrder(order.id)">Edit</button>
+
+<button class="btn btn-sm btn-danger" 
+        (click)="order.id && deleteOrder(order.id)">Delete</button>
+
       </td>
     </tr>
     <tr *ngIf="displayedOrders.length === 0">
@@ -83,6 +87,8 @@
   </tbody>
 </table>
 
+
+<!-- Pagination -->
 <!-- Pagination -->
 <nav *ngIf="totalPages > 1" aria-label="Page navigation">
   <ul class="pagination justify-content-center mt-3">
@@ -100,3 +106,5 @@
     </li>
   </ul>
 </nav>
+
+

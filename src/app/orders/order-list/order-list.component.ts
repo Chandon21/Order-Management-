@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { OrderService } from '../order.service';
+import { Order, Customer, OrderItem } from '../../models/order.model';
+import { Params } from '@angular/router';
+import { OrderQueryParams } from '../../models/queryparams.model';
 
 @Component({
   selector: 'app-order-list',
@@ -8,21 +11,20 @@ import { OrderService } from '../order.service';
   styleUrls: ['./order-list.component.css']
 })
 export class OrderListComponent implements OnInit {
-  public orders: any[] = [];
-  public filteredOrders: any[] = [];
-  public displayedOrders: any[] = [];
+  public orders: Order[] = [];
+  public filteredOrders: Order[] = [];
+  public displayedOrders: Order[] = [];
   public searchTerm: string = '';
 
   public filterStatus: string = '';
   public filterFrom: string = '';
   public filterTo: string = '';
 
-  public sortBy: string = 'orderDate';
+  public sortBy: keyof Order = 'orderDate';
   public sortDir: 'asc' | 'desc' = 'desc';
 
-  
   public currentPage: number = 1;
-  public pageSize: number = 10; 
+  public pageSize: number = 10;
   public totalPages: number = 1;
 
   constructor(
@@ -37,138 +39,157 @@ export class OrderListComponent implements OnInit {
       this.filterStatus = q.get('status') || '';
       this.filterFrom = q.get('from') || '';
       this.filterTo = q.get('to') || '';
-      this.sortBy = q.get('sortBy') || this.sortBy;
+      this.sortBy = (q.get('sortBy') as keyof Order) || this.sortBy;
       this.sortDir = (q.get('sortDir') as 'asc'|'desc') || this.sortDir;
       this.currentPage = +(q.get('page') || 1);
       this.pageSize = +(q.get('pageSize') || 10);
       this.loadOrders();
     });
   }
+updateQueryParams() {
+  const queryParams: OrderQueryParams = {
+    search: this.searchTerm || undefined,
+    status: this.filterStatus || undefined,
+    from: this.filterFrom || undefined,
+    to: this.filterTo || undefined,
+    sortBy: this.sortBy?.toString(),
+    sortDir: this.sortDir,
+    page: this.currentPage,
+    pageSize: this.pageSize
+  };
 
-  loadOrders() {
-    this.orderService.getOrders().subscribe((res: any[]) => {
+ 
+  this.router.navigate([], {
+    relativeTo: this.route,
+    queryParams: queryParams as Params,
+    replaceUrl: true
+  });
+}
+
+
+
+  loadOrders(): void {
+    this.orderService.getOrders().subscribe((res: Order[]) => {
       this.orders = res || [];
       this.applyFilters();
     });
   }
 
-  applyFilters() {
-    const term = (this.searchTerm || '').toLowerCase().trim();
+  applyFilters(): void {
+    const term = this.searchTerm.toLowerCase().trim();
 
     this.filteredOrders = this.orders.filter(order => {
-      const matchesSearch = !term || (
-        (order.orderNo || '').toLowerCase().includes(term) ||
-        (order.customer?.name || '').toLowerCase().includes(term) ||
-        (order.status || '').toLowerCase().includes(term)
-      );
+      const matchesSearch =
+        !term ||
+        order.orderNo.toLowerCase().includes(term) ||
+        order.customer?.name.toLowerCase().includes(term) ||
+        order.status.toLowerCase().includes(term);
 
       const matchesStatus = !this.filterStatus || order.status === this.filterStatus;
 
-      let matchesFrom = true;
-      let matchesTo = true;
-      if (this.filterFrom) {
-        matchesFrom = new Date(order.orderDate) >= new Date(this.filterFrom);
-      }
-      if (this.filterTo) {
-        matchesTo = new Date(order.orderDate) <= new Date(this.filterTo);
-      }
+      const matchesFrom = !this.filterFrom || new Date(order.orderDate) >= new Date(this.filterFrom);
+      const matchesTo = !this.filterTo || new Date(order.orderDate) <= new Date(this.filterTo);
 
       return matchesSearch && matchesStatus && matchesFrom && matchesTo;
     });
 
     this.applySort();
-    this.updateQueryParams();
   }
 
-  applySort() {
+  applySort(): void {
     const arr = [...this.filteredOrders];
 
-    const getValue = (order: any, field: string) => {
-      if (!order) return null;
-      if (field === 'customer') return (order.customer?.name || '').toLowerCase();
-      if (field === 'orderDate') return new Date(order.orderDate).getTime();
-      if (field === 'total') return Number(order.total || 0);
-      return (order[field] || '').toString().toLowerCase();
-    };
+    arr.sort((a: Order, b: Order) => {
+      let valA: string | number;
+let valB: string | number;
 
-    arr.sort((a,b) => {
-      const va = getValue(a,this.sortBy);
-      const vb = getValue(b,this.sortBy);
-      if(va==null && vb==null) return 0;
-      if(va==null) return this.sortDir==='asc'? -1:1;
-      if(vb==null) return this.sortDir==='asc'? 1:-1;
-      if(va<vb) return this.sortDir==='asc'? -1:1;
-      if(va>vb) return this.sortDir==='asc'? 1:-1;
+if (this.sortBy === 'customer') {
+  valA = a.customer?.name.toLowerCase() || '';
+  valB = b.customer?.name.toLowerCase() || '';
+} else if (this.sortBy === 'orderDate') {
+  valA = new Date(a.orderDate).getTime();
+  valB = new Date(b.orderDate).getTime();
+} else if (this.sortBy === 'total') {
+  valA = a.total || 0;
+  valB = b.total || 0;
+} else {
+  valA = String(a[this.sortBy] ?? '').toLowerCase();
+  valB = String(b[this.sortBy] ?? '').toLowerCase();
+}
+
+      if (valA < valB) return this.sortDir === 'asc' ? -1 : 1;
+      if (valA > valB) return this.sortDir === 'asc' ? 1 : -1;
       return 0;
     });
 
-    
     this.totalPages = Math.ceil(arr.length / this.pageSize);
     const start = (this.currentPage - 1) * this.pageSize;
     const end = start + this.pageSize;
     this.displayedOrders = arr.slice(start, end);
   }
 
-  setSort(field: string) {
-    if (this.sortBy === field) this.sortDir = this.sortDir==='asc'?'desc':'asc';
-    else { this.sortBy = field; this.sortDir='asc'; }
+  changePage(page: number) {
+  if (page < 1 || page > this.totalPages) return;
+  this.currentPage = page;
+  this.applySort();
+  this.updateQueryParams();
+}
+
+setSort(field: keyof Order) {
+  if (this.sortBy === field) this.sortDir = this.sortDir === 'asc' ? 'desc' : 'asc';
+  else this.sortBy = field;
+
+  this.applySort();
+  this.updateQueryParams();
+}
+
+
+  changePageSize(size: number): void {
+    this.pageSize = size;
+    this.currentPage = 1;
     this.applySort();
-    this.updateQueryParams();
   }
 
-  clearFilters() {
+  clearFilters(): void {
     this.searchTerm = '';
     this.filterStatus = '';
     this.filterFrom = '';
     this.filterTo = '';
-    this.currentPage = 1; 
+    this.currentPage = 1;
     this.applyFilters();
   }
 
-  updateQueryParams() {
-    const q: any = {};
- 
-    if (this.searchTerm) q.search = this.searchTerm;
-    if (this.filterStatus) q.status = this.filterStatus;
-    if (this.filterFrom) q.from = this.filterFrom;
-    if (this.filterTo) q.to = this.filterTo;
-   
-    if (this.sortBy) q.sortBy = this.sortBy;
-    if (this.sortDir) q.sortDir = this.sortDir;
-    
-    q.page = this.currentPage;
-    q.pageSize = this.pageSize;
-    this.router.navigate([], {
-      relativeTo: this.route,
-      queryParams: q,
-      replaceUrl: true
-    });
-  }
-
-  changePage(page: number) {
-    if (page < 1 || page > this.totalPages) return;
-    this.currentPage = page;
-    this.applySort(); 
-    this.updateQueryParams();
-  }
-  changePageSize(size: number) {
-  this.pageSize = size;
-  this.currentPage = 1; 
-  this.applySort();     
-  this.updateQueryParams(); 
-}
-
-  
-  createOrder() {
+  createOrder(): void {
     this.router.navigate(['/orders/new']);
   }
 
-  editOrder(id: any) {
+  editOrder(id: string | undefined): void {
+    if (!id) return;
     this.router.navigate(['/orders', id, 'edit']);
   }
 
-  deleteOrder(id: any) {
-    if(!confirm('Are you sure you want to delete this order?')) return;
-    this.orderService.deleteOrder(id).subscribe(()=> this.loadOrders());
+  deleteOrder(id: string | undefined): void {
+    if (!id) return;
+    if (!confirm('Are you sure you want to delete this order?')) return;
+    this.orderService.deleteOrder(id).subscribe(() => this.loadOrders());
   }
+
+  onSearchChange() {
+  this.currentPage = 1; 
+  this.applyFilters();
+  this.updateQueryParams();
+}
+
+onStatusChange() {
+  this.currentPage = 1;
+  this.applyFilters();
+  this.updateQueryParams();
+}
+
+onDateChange() {
+  this.currentPage = 1;
+  this.applyFilters();
+  this.updateQueryParams();
+}
+
 }
