@@ -18,6 +18,7 @@ export class OrderFormComponent implements OnInit {
   public orderId: string | null = null;  
   public isEditMode = false;  
   public newCustomerName = ''; 
+  
 
   constructor(
     private fb: FormBuilder,
@@ -41,7 +42,13 @@ export class OrderFormComponent implements OnInit {
       status: ['Pending', Validators.required],
       items: this.fb.array([], Validators.required),
       vat: [0, [Validators.min(0)]],
+
+      
+      vatMode: ['exclusive', Validators.required],// for tax calculation
+     // vatMode: ['inclusive'],
       discount: [0, [Validators.min(0)]],
+
+      
       total: [{ value: 0, disabled: true }]
     });
 
@@ -115,24 +122,47 @@ export class OrderFormComponent implements OnInit {
   }
 
   
-  calculateTotal(): void {
-    let subtotal = 0;
+//updated for vat
 
-    this.items.controls.forEach((group: AbstractControl) => {
-      const qty = group.get('qty')?.value ?? 0;
-      const price = group.get('price')?.value ?? 0;
-      const total = qty * price;
-      group.get('total')?.setValue(total);
-      subtotal += total;
-    });
 
-    const vat = this.orderForm.get('vat')?.value ?? 0;
-    const discount = this.orderForm.get('discount')?.value ?? 0;
-    const grandTotal = subtotal + subtotal * (vat / 100) - subtotal * (discount / 100);
-    this.orderForm.get('total')?.setValue(grandTotal);
+ calculateTotal(): void {
+  let subtotal = 0;
+
+  this.items.controls.forEach((group: AbstractControl) => {
+    const qty = group.get('qty')?.value ?? 0;
+    const price = group.get('price')?.value ?? 0;
+    const total = qty * price;
+    group.get('total')?.setValue(total);
+    subtotal += total;
+  });
+
+  const vat = this.orderForm.get('vat')?.value ?? 0;
+  const discount = this.orderForm.get('discount')?.value ?? 0;
+  const vatMode = this.orderForm.get('vatMode')?.value ?? 'exclusive';
+
+  let grandTotal = 0;
+
+//exclusive
+
+
+  if (vatMode === 'exclusive') {
+    
+    const discountedSubtotal = subtotal - subtotal * (discount / 100);
+    grandTotal = discountedSubtotal + discountedSubtotal * (vat / 100);
+  } else {
+    //inclusive
+    const priceWithoutVat = subtotal / (1 + vat / 100);
+    const discountedBase = priceWithoutVat - priceWithoutVat * (discount / 100);
+    grandTotal = discountedBase; 
   }
 
-  
+  this.orderForm.get('total')?.setValue(grandTotal);
+}
+
+
+
+
+
   save(): void {
     if (this.orderForm.invalid) {
       this.orderForm.markAllAsTouched();
@@ -150,6 +180,11 @@ export class OrderFormComponent implements OnInit {
       total: formValue.total
     };
 
+
+
+
+
+
     if (this.isEditMode && this.orderId) {
       this.orderService.updateOrder(this.orderId, orderData).subscribe(() => {
         this.router.navigate(['/orders']);
@@ -162,6 +197,12 @@ export class OrderFormComponent implements OnInit {
   }
 
   
+
+
+
+
+
+
   addNewCustomer(): void {
     if (!this.newCustomerName.trim()) return;
     const newCustomer: Omit<Customer, 'id'> = { name: this.newCustomerName };
@@ -188,3 +229,7 @@ export class OrderFormComponent implements OnInit {
     this.orderForm.get('orderNo')?.setValue(`SO-${year}-${randomNumber}`);
   }
 }
+
+
+
+

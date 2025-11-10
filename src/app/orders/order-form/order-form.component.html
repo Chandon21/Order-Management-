@@ -98,6 +98,26 @@
         <input type="number" class="form-control" formControlName="vat" (input)="calculateTotal()">
       </div>
 
+
+<!-- vatMode Added -->
+
+
+
+
+      <div class ="col-md-2">                
+         <label for="vatMode">VAT Mode</label>
+  <select id="vatMode" formControlName="vatMode" (change)="calculateTotal()" class="form-control">
+    <option value="exclusive">Exclusive</option>
+    <option value="inclusive">Inclusive</option>
+  </select>
+</div>
+
+
+
+
+
+
+
       <div class="col-md-2">
         <label>Discount (%)</label>
         <input type="number" class="form-control" formControlName="discount" (input)="calculateTotal()">

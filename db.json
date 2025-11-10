@@ -75,11 +75,17 @@
           "qty": 2,
           "price": 5000,
           "total": 10000
+        },
+        {
+          "product": "Smartphone",
+          "qty": 1,
+          "price": 100000,
+          "total": 100000
         }
       ],
-      "vat": 5,
+      "vat": 10,
       "discount": 10,
-      "total": 104500
+      "total": 210000
     },
     {
       "id": "a2d8",
@@ -291,7 +297,7 @@
     {
       "id": "9127",
       "orderNo": "SO-2025-406",
-      "orderDate": "2025-11-08",
+      "orderDate": "2025-11-10",
       "customer": {
         "id": "1f2e",
         "name": "Chandan Ghosh"
@@ -384,11 +390,17 @@
           "qty": 1,
           "price": 10000,
           "total": 10000
+        },
+        {
+          "product": "Smartphone",
+          "qty": 1,
+          "price": 100000,
+          "total": 100000
         }
       ],
       "vat": 5,
       "discount": 5,
-      "total": 110000
+      "total": 210000
     },
     {
       "id": "d46c",
@@ -577,27 +589,6 @@
       "total": 100000
     },
     {
-      "id": "0be5",
-      "orderNo": "SO-2025-312",
-      "orderDate": "2025-11-07",
-      "customer": {
-        "id": "1",
-        "name": "John Doe"
-      },
-      "status": "Completed",
-      "items": [
-        {
-          "product": "Laptop",
-          "qty": 1,
-          "price": 10,
-          "total": 10
-        }
-      ],
-      "vat": 0,
-      "discount": 0,
-      "total": 10
-    },
-    {
       "id": "bc48",
       "orderNo": "SO-2025-364",
       "orderDate": "2025-11-07",
@@ -638,6 +629,82 @@
       "vat": 5,
       "discount": 5,
       "total": 1000000
+    },
+    {
+      "id": "8e7f",
+      "orderNo": "SO-2025-671",
+      "orderDate": "2025-11-10",
+      "customer": {
+        "id": "9ac5",
+        "name": "November"
+      },
+      "status": "Completed",
+      "items": [
+        {
+          "product": "Laptop",
+          "qty": 1,
+          "price": 100000,
+          "total": 100000
+        },
+        {
+          "product": "Smartphone",
+          "qty": 1,
+          "price": 100000,
+          "total": 100000
+        }
+      ],
+      "vat": 5,
+      "discount": 5,
+      "total": 200000
+    },
+    {
+      "id": "ed6f",
+      "orderNo": "SO-2025-942",
+      "orderDate": "2025-11-10",
+      "customer": {
+        "id": "23d8",
+        "name": "Test"
+      },
+      "status": "Completed",
+      "items": [
+        {
+          "product": "Laptop",
+          "qty": 1,
+          "price": 100000,
+          "total": 100000
+        },
+        {
+          "product": "Smartphone",
+          "qty": 1,
+          "price": 100000,
+          "total": 100000
+        }
+      ],
+      "vat": 5,
+      "discount": 5,
+      "total": 200000
+    },
+    {
+      "id": "6704",
+      "orderNo": "SO-2025-715",
+      "orderDate": "2025-11-10",
+      "customer": {
+        "id": "98c0",
+        "name": "vat"
+      },
+      "status": "Pending",
+      "items": [
+        {
+          "product": "Laptop",
+          "qty": 1,
+          "price": 100,
+          "total": 100
+        }
+      ],
+      "vat": null,
+      "vatMode": "inclusive",
+      "discount": 5,
+      "total": 95
     }
   ],
   "customers": [
@@ -856,6 +923,18 @@
     {
       "id": "6b5a",
       "name": "value"
+    },
+    {
+      "id": "9ac5",
+      "name": "November"
+    },
+    {
+      "id": "23d8",
+      "name": "Test"
+    },
+    {
+      "id": "98c0",
+      "name": "vat"
     }
   ],
   "products": [
